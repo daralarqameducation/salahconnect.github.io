@@ -4,26 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0d1117">
-<style>html,body{background:#0d1117!important;margin:0!important;padding:0!important;}</style>
+<style>html,body{background:#f0ede8!important;margin:0!important;padding:0!important;}</style>
 <title>Masajid</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0d1117; --bg2: #131a24; --bg3: #1a2332;
-  --card: #141c28; --card2: #1c2535;
-  --gold: #f0a500; --gold2: #e8920a;
-  --text: #e8edf5; --muted: #8a9ab5;
-  --border: rgba(255,255,255,0.07); --radius: 16px;
+  --bg: #f0ede8; --bg2: #e8e4de; --bg3: #dedad3;
+  --card: #ffffff; --card2: #f5f2ed;
+  --gold: #9b8f7a; --gold2: #857668;
+  --text: #1a1a1a; --muted: #6b6358;
+  --border: rgba(0,0,0,0.08); --radius: 16px;
 }
-html, body { background: #0d1117 !important; margin: 0 !important; padding: 0 !important; }
+html, body { background: #f0ede8 !important; margin: 0 !important; padding: 0 !important; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Poppins', sans-serif; background: #0d1117; color: #e8edf5; min-height: 100vh; overflow-x: hidden; }
-nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+body { font-family: 'Poppins', sans-serif; background: #f0ede8; color: #1a1a1a; min-height: 100vh; overflow-x: hidden; }
+nav { position: sticky; top: 0; z-index: 100; background: rgba(240,237,232,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
 .nav-logo { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; color: var(--text); text-decoration: none; }
 .nav-links { display: flex; gap: 4px; align-items: center; }
 .nav-link { padding: 6px 16px; border-radius: 8px; font-size: 14px; color: var(--muted); cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; border: none; background: none; font-family: inherit; }
 .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-.nav-link.active { background: rgba(240,165,0,0.12); color: var(--gold); }
+.nav-link.active { background: rgba(155,143,122,0.15); color: var(--gold); }
 .page { display: none; animation: fadeIn 0.3s ease; }
 .page.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -42,13 +42,13 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); b
 .feat-duas { background: linear-gradient(135deg, #ec4899, #db2777); }
 .feat-calendar { background: linear-gradient(135deg, #6366f1, #4f46e5); }
 .charity-banner { margin: 0 32px 48px; border-radius: var(--radius); overflow: hidden; position: relative; min-height: 180px; display: flex; align-items: flex-end; border: 1px solid var(--border); }
-.charity-bg { position: absolute; inset: 0; background: linear-gradient(to right, rgba(13,17,23,0.9) 40%, rgba(13,17,23,0.4) 100%); z-index: 1; }
+.charity-bg { position: absolute; inset: 0; background: linear-gradient(to right, rgba(26,26,26,0.85) 40%, rgba(26,26,26,0.3) 100%); z-index: 1; }
 .charity-img { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&q=60') center/cover no-repeat; }
 .charity-content { position: relative; z-index: 2; padding: 28px 32px; }
 .charity-label { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #f87171; margin-bottom: 10px; text-transform: uppercase; }
-.charity-content h3 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
-.charity-content p { font-size: 14px; color: var(--muted); margin-bottom: 18px; }
-.charity-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: #0d1117; font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-family: inherit; }
+.charity-content h3 { font-size: 24px; font-weight: 700; margin-bottom: 6px; color: #ffffff; }
+.charity-content p { font-size: 14px; color: rgba(255,255,255,0.8); margin-bottom: 18px; }
+.charity-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: #ffffff; font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-family: inherit; }
 .section { padding: 0 32px 48px; }
 .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; }
 .section-header h2 { font-size: 22px; font-weight: 700; }
@@ -56,7 +56,7 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); b
 .view-all { color: var(--gold); font-size: 14px; font-weight: 500; cursor: pointer; background: none; border: none; font-family: inherit; }
 .mosque-grid { display: flex; flex-direction: column; gap: 8px; }
 .mosque-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: border-color 0.2s, transform 0.2s; width: 100%; }
-.mosque-card:hover { border-color: rgba(240,165,0,0.3); transform: translateY(-2px); }
+.mosque-card:hover { border-color: rgba(155,143,122,0.4); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
 .mosque-card img { width: 100%; height: 160px; object-fit: cover; display: block; }
 .mosque-card-body { padding: 16px; }
 .mosque-card-name { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
@@ -66,7 +66,7 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); b
 .tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border); }
 .mosque-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border); margin-top: 4px; }
 .view-details { color: var(--gold); font-size: 12px; font-weight: 500; text-decoration: none; }
-.area-badge { font-size: 10px; padding: 2px 7px; border-radius: 6px; background: rgba(240,165,0,0.1); color: var(--gold); border: 1px solid rgba(240,165,0,0.2); white-space: nowrap; font-weight: 500; }
+.area-badge { font-size: 10px; padding: 2px 7px; border-radius: 6px; background: rgba(155,143,122,0.12); color: var(--gold); border: 1px solid rgba(155,143,122,0.25); white-space: nowrap; font-weight: 500; }
 .mosques-header { padding: 32px 32px 0; }
 .mosques-header h1 { font-size: 32px; font-weight: 800; margin-bottom: 4px; }
 .mosques-count { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
@@ -80,7 +80,7 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); b
 .view-btn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; background: none; color: var(--muted); }
 .view-btn.active { background: rgba(240,165,0,0.15); color: var(--gold); }
 .view-btn svg { width: 18px; height: 18px; }
-.locate-btn { display: flex; align-items: center; gap: 8px; background: rgba(240,165,0,0.1); border: 1px solid rgba(240,165,0,0.25); color: var(--gold); font-size: 13px; font-weight: 500; padding: 10px 16px; border-radius: 10px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+.locate-btn { display: flex; align-items: center; gap: 8px; background: rgba(155,143,122,0.1); border: 1px solid rgba(155,143,122,0.3); color: var(--gold); font-size: 13px; font-weight: 500; padding: 10px 16px; border-radius: 10px; cursor: pointer; font-family: inherit; white-space: nowrap; }
 .locate-btn svg { width: 15px; height: 15px; }
 .area-filters { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-bottom: 4px; }
 .area-btn { font-size: 12px; font-family: inherit; padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--card); color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.2s; }
@@ -92,10 +92,10 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); b
 .mosque-list-body { padding: 18px 20px; }
 .mosque-list-name { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
 .loading-state { padding: 48px; text-align: center; color: var(--muted); font-size: 14px; }
-.mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(13,17,23,0.95); backdrop-filter: blur(12px); border-top: 1px solid var(--border); padding: 8px 0 12px; z-index: 100; }
+.mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(240,237,232,0.95); backdrop-filter: blur(12px); border-top: 1px solid var(--border); padding: 8px 0 12px; z-index: 100; box-shadow: 0 -2px 12px rgba(0,0,0,0.06); }
 .mobile-nav-inner { display: flex; justify-content: space-around; }
 .mobile-nav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); cursor: pointer; padding: 4px 12px; border: none; background: none; font-family: inherit; }
-.mobile-nav-btn.active { color: var(--gold); }
+.mobile-nav-btn.active { color: var(--gold); font-weight: 600; }
 .mobile-nav-btn svg { width: 22px; height: 22px; }
 @media (max-width: 768px) {
   nav .nav-links { display: none; }
@@ -120,8 +120,8 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); b
 .detail-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; padding-bottom: 40px; }
 .detail-card { background: var(--card2); border-radius: var(--radius); padding: 20px; }
 .detail-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
-.pt-section { background: var(--card2); border-radius: var(--radius); padding: 20px; }
-.pt-section h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: white; }
+.pt-section { background: var(--card2); border-radius: var(--radius); padding: 20px; border: 1px solid var(--border); }
+.pt-section h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--text); }
 .pt-header-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; padding: 0 0 10px 0; }
 .pt-header-row span { font-size: 12px; font-weight: 600; color: var(--muted); text-align: center; }
 .pt-header-row span:first-child { text-align: left; }
@@ -134,7 +134,7 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); b
 .jummah-section { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
 .jummah-section h4 { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
 .jummah-times { display: flex; gap: 8px; flex-wrap: wrap; }
-.jummah-pill { background: rgba(240,165,0,0.12); border: 1px solid rgba(240,165,0,0.25); color: var(--gold); font-size: 14px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+.jummah-pill { background: rgba(155,143,122,0.12); border: 1px solid rgba(155,143,122,0.3); color: var(--gold); font-size: 14px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
 .facility-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 15px; }
 .facility-item + .facility-item { border-top: 1px solid var(--border); }
 .fac-icon { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -157,7 +157,7 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); b
 .svc-item:first-child { border-top: none; }
 .svc-icon-sm { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .svc-icon-sm svg { width: 18px; height: 18px; }
-.directions-btn { width: 100%; background: var(--gold); color: #0d1117; font-size: 15px; font-weight: 700; padding: 14px; border-radius: 12px; border: none; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; }
+.directions-btn { width: 100%; background: var(--gold); color: #ffffff; font-size: 15px; font-weight: 700; padding: 14px; border-radius: 12px; border: none; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; }
 </style>
 </head>
 <body>
@@ -180,6 +180,10 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); b
     <button class="nav-link" data-page="jummah" onclick="showPage('jummah')">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>Jummah
     </button>
+    <a href="mosque-admin.html" style="font-size:11px;color:var(--muted);padding:6px 10px;border-radius:8px;text-decoration:none;border:1px solid var(--border);display:flex;align-items:center;gap:5px;transition:all 0.2s" onmouseover="this.style.color='var(--text)';this.style.borderColor='rgba(255,255,255,0.15)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l5 2.18V11c0 3.5-2.33 6.79-5 7.93-2.67-1.14-5-4.43-5-7.93V7.18L12 5z"/></svg>
+      Admin
+    </a>
   </div>
 </nav>
 
@@ -205,6 +209,13 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); b
       <button class="view-all" onclick="showPage('mosques')">View All</button>
     </div>
     <div class="mosque-grid" id="home-grid"></div>
+  </div>
+
+  <div style="padding:0 32px 48px;text-align:center">
+    <a href="mosque-admin.html" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);text-decoration:none;padding:8px 16px;border-radius:8px;border:1px solid var(--border)">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l5 2.18V11c0 3.5-2.33 6.79-5 7.93-2.67-1.14-5-4.43-5-7.93V7.18L12 5z"/></svg>
+      Mosque Admin Portal
+    </a>
   </div>
 </div>
 
@@ -262,12 +273,24 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); b
 <div class="page" id="page-jummah">
   <div style="padding:32px 32px 0">
     <h1 style="font-size:32px;font-weight:800;margin-bottom:4px">Jummah Times</h1>
-    <p style="font-size:14px;color:var(--muted);margin-bottom:20px">Friday prayer times across Tower Hamlets</p>
-    <div class="search-wrap" style="margin-bottom:16px">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-      <input type="text" id="jummah-search" placeholder="Search mosque or area..." oninput="filterJummah()">
+    <p style="font-size:14px;color:var(--muted);margin-bottom:20px">Friday prayer times across Tower Hamlets, Newham &amp; Redbridge</p>
+    <div class="search-bar-row">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" id="jummah-search" placeholder="Search mosque or area..." oninput="filterJummah()">
+      </div>
     </div>
-    <div id="jummah-filters" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px"></div>
+    <div style="display:flex;gap:10px;margin-top:10px">
+      <select id="jummah-city-select" onchange="filterJummah()" style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%238a9ab5'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center">
+        <option value="">All Cities</option>
+        <option value="Tower Hamlets">Tower Hamlets</option>
+        <option value="Newham">Newham</option>
+        <option value="Redbridge">Redbridge</option>
+      </select>
+      <select id="jummah-area-select" onchange="filterJummah()" style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%238a9ab5'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center">
+        <option value="">All Areas</option>
+      </select>
+    </div>
   </div>
   <div id="jummah-results" style="padding:16px 32px 48px"></div>
 </div>
@@ -521,28 +544,33 @@ function showPage(id) {
 var activeJummahArea = 'All';
 
 function initJummahFilters() {
-  var areas = ['All'];
-  var seen = {};
-  MOSQUES.forEach(function(m){ if (!seen[m.area]) { seen[m.area] = true; areas.push(m.area); } });
-  var el = document.getElementById('jummah-filters');
-  if (!el) return;
-  el.innerHTML = areas.map(function(a) {
-    return '<button class="area-btn' + (a === 'All' ? ' active' : '') + '" onclick="setJummahArea(\'' + a + '\')">' + a + '</button>';
-  }).join('');
+  updateJummahAreaDropdown();
 }
 
-function setJummahArea(area) {
-  activeJummahArea = area;
-  document.querySelectorAll('#jummah-filters .area-btn').forEach(function(b){ b.classList.toggle('active', b.textContent === area); });
-  filterJummah();
+function updateJummahAreaDropdown() {
+  var cityEl = document.getElementById('jummah-city-select');
+  var areaEl = document.getElementById('jummah-area-select');
+  if (!cityEl || !areaEl) return;
+  var city = cityEl.value;
+  var prev = areaEl.value;
+  var areas = city && CITY_AREAS[city] ? CITY_AREAS[city] : Object.values(CITY_AREAS).reduce(function(a,b){return a.concat(b);}, []);
+  areaEl.innerHTML = '<option value="">All Areas</option>' +
+    areas.map(function(a){ return '<option value="' + a + '">' + a + '</option>'; }).join('');
+  if (prev) areaEl.value = prev;
 }
 
 function filterJummah() {
+  updateJummahAreaDropdown();
   var input = document.getElementById('jummah-search');
   var q = input ? input.value.toLowerCase() : '';
+  var city = document.getElementById('jummah-city-select') ? document.getElementById('jummah-city-select').value : '';
+  var area = document.getElementById('jummah-area-select') ? document.getElementById('jummah-area-select').value : '';
   var filtered = MOSQUES.filter(function(m) {
-    return (activeJummahArea === 'All' || m.area === activeJummahArea) &&
-      (m.name.toLowerCase().indexOf(q) > -1 || m.area.toLowerCase().indexOf(q) > -1 || m.jummah.indexOf(q) > -1);
+    var cityAreas = city && CITY_AREAS[city] ? CITY_AREAS[city] : null;
+    var cityMatch = !cityAreas || cityAreas.indexOf(m.area) > -1;
+    var areaMatch = !area || m.area === area;
+    var textMatch = !q || m.name.toLowerCase().indexOf(q) > -1 || m.area.toLowerCase().indexOf(q) > -1 || m.jummah.indexOf(q) > -1;
+    return cityMatch && areaMatch && textMatch;
   });
   renderJummah(filtered);
 }
@@ -583,7 +611,7 @@ function renderJummah(mosques) {
     var rows = entries.map(function(e) {
       return '<div class="mosque-card" onclick="openDetail(' + e.idx + ')" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;margin-bottom:6px">' +
         '<div style="width:36px;height:36px;border-radius:10px;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="#f0a500"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="#9b8f7a"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>' +
         '</div>' +
         '<div style="flex:1;min-width:0">' +
           '<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + e.mosque.name + '</div>' +
@@ -676,11 +704,10 @@ function cardHTML(m, i) {
   return '<div class="mosque-card" onclick="openDetail(' + i + ')" style="cursor:pointer;display:flex;align-items:center;gap:14px;padding:14px 16px;position:relative">' +
     '<span class="area-badge" style="position:absolute;top:10px;right:12px">' + m.area + '</span>' +
     '<div style="width:42px;height:42px;border-radius:12px;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="#f0a500"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>' +
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="#9b8f7a"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>' +
     '</div>' +
     '<div style="flex:1;min-width:0;padding-right:60px">' +
-      '<div style="font-size:14px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + m.name + '</div>' +
-      '<div style="font-size:12px;color:var(--muted);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + m.address + '</div>' +
+      '<div style="font-size:14px;font-weight:600;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + m.name + '</div>' +
       '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
         '<span style="font-size:11px;color:var(--gold)">' + next.name + ' ' + next.time + '</span>' +
         '<span style="font-size:11px;color:var(--muted)">Jummah ' + m.jummah + '</span>' +
@@ -730,35 +757,75 @@ function renderHomeGrid() {
     MOSQUES.slice(0, 5).map(function(m,i){ return cardHTML(m,i); }).join('') + '</div>';
 }
 
+function haversine(lat1, lng1, lat2, lng2) {
+  var R = 6371;
+  var dLat = (lat2-lat1)*Math.PI/180;
+  var dLng = (lng2-lng1)*Math.PI/180;
+  var a = Math.sin(dLat/2)*Math.sin(dLat/2) +
+    Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
+    Math.sin(dLng/2)*Math.sin(dLng/2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+var MOSQUE_COORDS = {
+  'East London Mosque': [51.5181, -0.0612],
+  'Markazi Masjid': [51.5147, -0.0701],
+  'Brick Lane Jamme Masjid': [51.5205, -0.0714],
+  'Dar al Arqam': [51.5274, -0.0224],
+  'Bow Central Mosque': [51.5272, -0.0228],
+  'Whitechapel Mosque': [51.5181, -0.0602],
+  'Shadwell Jamme Masjid': [51.5121, -0.0587],
+  'Poplar Central Mosque': [51.5088, -0.0178],
+  'Redbridge Islamic Centre': [51.5689, 0.0648],
+  'Gants Hill Masjid': [51.5720, 0.0619],
+  'Forest Gate Central Mosque': [51.5499, 0.0337],
+  'Plashet Grove Mosque': [51.5380, 0.0453],
+  'Masjid Ibrahim': [51.5299, 0.0189],
+  'Seven Kings Masjid': [51.5679, 0.0991],
+  'Ilford Islamic Centre (Albert Road Mosque)': [51.5590, 0.0782]
+};
+
 function locateMe() {
-  if (!navigator.geolocation) return;
+  if (!navigator.geolocation) { alert('Geolocation not supported by your browser.'); return; }
+  var btn = document.querySelector('.locate-btn');
+  if (btn) btn.textContent = 'Locating...';
   navigator.geolocation.getCurrentPosition(function(pos) {
     var lat = pos.coords.latitude, lng = pos.coords.longitude;
     var countEl = document.getElementById('mosque-count');
-    var resEl = document.getElementById('mosque-results');
-    if (countEl) countEl.textContent = 'Searching near you...';
-    if (resEl) resEl.innerHTML = '<div class="loading-state">Finding nearby mosques...</div>';
-    fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 2000,
-        tools: [{type: 'web_search_20250305', name: 'web_search'}],
-        messages: [{role: 'user', content: 'Find mosques near ' + lat + ',' + lng + '. Return ONLY a JSON array no markdown: [{"name":"...","address":"...","jummah":"1:30 PM","area":"area name","url":"https://maps.google.com/?q=name+address"}]'}]
-      })
-    }).then(function(r){ return r.json(); }).then(function(data) {
-      var text = data.content.filter(function(b){ return b.type === 'text'; }).map(function(b){ return b.text; }).join('');
-      var match = text.match(/\[[\s\S]*\]/);
-      if (match) {
-        try {
-          var found = JSON.parse(match[0]);
-          renderList(found);
-          if (countEl) countEl.textContent = found.length + ' mosques found near you';
-        } catch(e) { renderList(MOSQUES); }
-      } else { renderList(MOSQUES); }
-    }).catch(function(){ renderList(MOSQUES); });
-  }, function(){ alert('Could not get location'); });
+    var cityEl = document.getElementById('city-select');
+    var areaEl = document.getElementById('area-select');
+    if (cityEl) cityEl.value = '';
+    if (areaEl) areaEl.value = '';
+
+    // Score each mosque by distance — use coords if known, else area centroid
+    var AREA_CENTROIDS = {
+      'Whitechapel': [51.518, -0.061], 'Stepney': [51.515, -0.048],
+      'Shadwell': [51.512, -0.059], 'Shoreditch': [51.522, -0.072],
+      'Bethnal Green': [51.527, -0.056], 'Bow': [51.528, -0.023],
+      'Poplar': [51.508, -0.018], 'Limehouse': [51.511, -0.035],
+      'Docklands': [51.503, -0.009], 'Mile End': [51.525, -0.034],
+      'Wapping': [51.507, -0.063], 'Forest Gate': [51.550, 0.034],
+      'East Ham': [51.538, 0.046], 'Plaistow': [51.530, 0.019],
+      'Stratford': [51.542, 0.003], 'Canning Town': [51.514, 0.007],
+      'Ilford': [51.559, 0.079], 'Seven Kings': [51.568, 0.099],
+      'Newbury Park': [51.572, 0.063], 'Woodford': [51.607, 0.021],
+      'Chadwell Heath': [51.568, 0.130], 'Redbridge': [51.569, 0.065]
+    };
+
+    var scored = MOSQUES.map(function(m, i) {
+      var coords = MOSQUE_COORDS[m.name] || AREA_CENTROIDS[m.area] || [51.5, -0.1];
+      var dist = haversine(lat, lng, coords[0], coords[1]);
+      return { mosque: m, idx: i, dist: dist };
+    });
+    scored.sort(function(a, b) { return a.dist - b.dist; });
+    var nearest = scored.slice(0, 20).map(function(s) { return s.mosque; });
+    renderList(nearest);
+    if (countEl) countEl.textContent = '20 mosques nearest to you';
+    if (btn) { btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3A8.994 8.994 0 0013 3.06V1h-2v2.06A8.994 8.994 0 003.06 11H1v2h2.06A8.994 8.994 0 0011 20.94V23h2v-2.06A8.994 8.994 0 0020.94 13H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg> Near me'; }
+  }, function() {
+    if (btn) btn.textContent = 'Near me';
+    alert('Could not get your location. Please allow location access and try again.');
+  });
 }
 
 function openDetail(idx) {
@@ -821,14 +888,14 @@ function openDetail(idx) {
           '<p style="font-size:13px;color:var(--muted)">' + m.address + '</p>' +
         '</div>' +
         '<div style="width:48px;height:48px;border-radius:12px;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
-          '<svg width="22" height="22" viewBox="0 0 24 24" fill="#f0a500"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>' +
+          '<svg width="22" height="22" viewBox="0 0 24 24" fill="#9b8f7a"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>' +
         '</div>' +
       '</div>' +
     '</div>' +
     '<div class="detail-body">' +
       '<div class="pt-section">' +
         '<h3>Prayer Times</h3>' +
-        '<div id="salah-countdown-' + idx + '" style="background:rgba(0,0,0,0.3);border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">' +
+        '<div id="salah-countdown-' + idx + '" style="background:rgba(0,0,0,0.04);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">' +
           '<div>' +
             '<div style="font-size:10px;font-weight:600;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px">NEXT SALAH</div>' +
             '<div style="display:flex;align-items:baseline;gap:8px">' +
@@ -838,11 +905,11 @@ function openDetail(idx) {
           '</div>' +
           '<div style="text-align:right">' +
             '<div style="font-size:10px;font-weight:600;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px">STARTS IN</div>' +
-            '<span id="cd-countdown-' + idx + '" style="font-size:26px;font-weight:700;color:#818cf8;font-variant-numeric:tabular-nums"></span>' +
+            '<span id="cd-countdown-' + idx + '" style="font-size:26px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums"></span>' +
           '</div>' +
         '</div>' +
-        '<div id="cd-bar-wrap-' + idx + '" style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;margin-bottom:16px;margin-top:-10px">' +
-          '<div id="cd-bar-' + idx + '" style="height:3px;background:#818cf8;border-radius:2px;width:0%;transition:width 1s linear"></div>' +
+        '<div id="cd-bar-wrap-' + idx + '" style="height:3px;background:rgba(0,0,0,0.08);border-radius:2px;margin-bottom:16px;margin-top:-10px">' +
+          '<div id="cd-bar-' + idx + '" style="height:3px;background:var(--gold);border-radius:2px;width:0%;transition:width 1s linear"></div>' +
         '</div>' +
         '<div class="pt-header-row"><span></span><span>Begins</span><span>Jama\'ah</span><span>Tomorrow</span></div>' +
         ptRows +
