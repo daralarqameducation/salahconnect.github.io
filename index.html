@@ -46,8 +46,8 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(240,237,232,0.92)
 .slider-track { display: flex; height: 100%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
 .slide { min-width: 100%; height: 100%; position: relative; flex-shrink: 0; }
 .slide-img { position: absolute; inset: 0; background-size: cover; background-position: center; }
-.slide-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(26,26,26,0.88) 45%, rgba(26,26,26,0.25) 100%); }
-.slide-content { position: relative; z-index: 2; padding: 24px 28px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+.slide-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(20,20,20,0.95) 0%, rgba(20,20,20,0.6) 50%, rgba(20,20,20,0.2) 100%); }
+.slide-content { position: relative; z-index: 2; padding: 20px 20px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
 .slide-label { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #f87171; margin-bottom: 8px; text-transform: uppercase; }
 .slide-label.sponsored { color: #fbbf24; }
 .slide-content h3 { font-size: 20px; font-weight: 700; margin-bottom: 4px; color: #ffffff; line-height: 1.2; }
@@ -153,7 +153,7 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(240,237,232,0.92)
 .contact-item + .contact-item { margin-top: 4px; }
 .con-icon { width: 44px; height: 44px; background: rgba(255,255,255,0.06); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .con-icon svg { width: 20px; height: 20px; color: var(--gold); }
-.service-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: border-color 0.2s; margin-bottom: 10px; }
+.service-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: border-color 0.2s; margin-bottom: 10px; position: relative; }
 .service-card:hover { border-color: rgba(240,165,0,0.3); }
 .service-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .service-icon svg { width: 22px; height: 22px; }
@@ -248,17 +248,23 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(240,237,232,0.92)
       </div>
 
     </div>
-    <button class="slider-nav prev" onclick="slideBy(-1)">&#8249;</button>
-    <button class="slider-nav next" onclick="slideBy(1)">&#8250;</button>
     <div class="slider-dots" id="slider-dots"></div>
   </div>
 
   <div class="section">
     <div class="section-header">
-      <div><h2>Nearby Mosques</h2><p id="home-location-label">Detecting your location...</p></div>
+      <div><h2>Nearby Mosques</h2><p id="home-location-label" style="display:none"></p></div>
       <button class="view-all" onclick="showPage('mosques')">View All</button>
     </div>
     <div class="mosque-grid" id="home-grid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div><h2>Nearby Services</h2><p id="home-services-label" style="display:none"></p></div>
+      <button class="view-all" onclick="showPage('services')">View All</button>
+    </div>
+    <div id="home-services-grid"></div>
   </div>
 
   <div style="padding:0 32px 48px;text-align:center">
@@ -287,9 +293,7 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(240,237,232,0.92)
     <div style="display:flex;gap:10px;margin-top:10px">
       <select id="city-select" onchange="filterMosques()" style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%238a9ab5'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center">
         <option value="">All Cities</option>
-        <option value="Tower Hamlets">Tower Hamlets</option>
-        <option value="Newham">Newham</option>
-        <option value="Redbridge">Redbridge</option>
+        <option value="London">London</option>
       </select>
       <select id="area-select" onchange="filterMosques()" style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%238a9ab5'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center">
         <option value="">All Areas</option>
@@ -333,9 +337,7 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(240,237,232,0.92)
     <div style="display:flex;gap:10px;margin-top:10px">
       <select id="jummah-city-select" onchange="filterJummah()" style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%238a9ab5'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center">
         <option value="">All Cities</option>
-        <option value="Tower Hamlets">Tower Hamlets</option>
-        <option value="Newham">Newham</option>
-        <option value="Redbridge">Redbridge</option>
+        <option value="London">London</option>
       </select>
       <select id="jummah-area-select" onchange="filterJummah()" style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%238a9ab5'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center">
         <option value="">All Areas</option>
@@ -568,9 +570,10 @@ function renderServices(results) {
       '<div class="service-icon" style="background:' + c.bg + '">' +
         '<svg viewBox="0 0 24 24" fill="' + c.color + '">' + svcIcon(s.type) + '</svg>' +
       '</div>' +
+      '<span class="area-badge" style="position:absolute;top:10px;right:12px">' + m.area + '</span>' +
       '<div class="service-body">' +
         '<div class="service-name">' + s.name + '</div>' +
-        '<div class="service-mosque">' + m.name + ' &bull; ' + m.area + '</div>' +
+        '<div class="service-mosque">' + m.name + '</div>' +
         '<div class="service-meta">' +
           '<span class="service-type-badge" style="background:' + c.bg + ';color:' + c.color + '">' + s.type + '</span>' +
           (s.days ? '<span style="font-size:11px;color:var(--muted);padding:2px 0">' + s.days + (s.time ? ' &bull; ' + s.time : '') + '</span>' : '') +
@@ -601,11 +604,17 @@ function updateJummahAreaDropdown() {
   var cityEl = document.getElementById('jummah-city-select');
   var areaEl = document.getElementById('jummah-area-select');
   if (!cityEl || !areaEl) return;
-  var city = cityEl.value;
   var prev = areaEl.value;
-  var areas = city && CITY_AREAS[city] ? CITY_AREAS[city] : Object.values(CITY_AREAS).reduce(function(a,b){return a.concat(b);}, []);
-  areaEl.innerHTML = '<option value="">All Areas</option>' +
-    areas.map(function(a){ return '<option value="' + a + '">' + a + '</option>'; }).join('');
+  var boroughs = Object.keys(BOROUGH_AREAS);
+  var opts = '<option value="">All Areas</option>';
+  boroughs.forEach(function(b) {
+    opts += '<optgroup label="' + b + '">';
+    BOROUGH_AREAS[b].forEach(function(a) {
+      opts += '<option value="' + a + '">' + a + '</option>';
+    });
+    opts += '</optgroup>';
+  });
+  areaEl.innerHTML = opts;
   if (prev) areaEl.value = prev;
 }
 
@@ -616,11 +625,9 @@ function filterJummah() {
   var city = document.getElementById('jummah-city-select') ? document.getElementById('jummah-city-select').value : '';
   var area = document.getElementById('jummah-area-select') ? document.getElementById('jummah-area-select').value : '';
   var filtered = MOSQUES.filter(function(m) {
-    var cityAreas = city && CITY_AREAS[city] ? CITY_AREAS[city] : null;
-    var cityMatch = !cityAreas || cityAreas.indexOf(m.area) > -1;
-    var areaMatch = !area || m.area === area;
+    var areaMatch = !area || m.area === area || (BOROUGH_AREAS[area] && BOROUGH_AREAS[area].indexOf(m.area) > -1);
     var textMatch = !q || m.name.toLowerCase().indexOf(q) > -1 || m.area.toLowerCase().indexOf(q) > -1 || m.jummah.indexOf(q) > -1;
-    return cityMatch && areaMatch && textMatch;
+    return areaMatch && textMatch;
   });
   renderJummah(filtered);
 }
@@ -659,15 +666,15 @@ function renderJummah(mosques) {
   el.innerHTML = order.map(function(time) {
     var entries = groups[time];
     var rows = entries.map(function(e) {
-      return '<div class="mosque-card" onclick="openDetail(' + e.idx + ')" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;margin-bottom:6px">' +
-        '<div style="width:36px;height:36px;border-radius:10px;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="#9b8f7a"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>' +
+      return '<div class="mosque-card" onclick="openDetail(' + e.idx + ')" style="cursor:pointer;display:flex;align-items:center;gap:14px;padding:14px 16px;position:relative;margin-bottom:6px">' +
+        '<span class="area-badge" style="position:absolute;top:10px;right:12px">' + e.mosque.area + '</span>' +
+        '<div style="width:42px;height:42px;border-radius:12px;background:rgba(155,143,122,0.12);border:1px solid rgba(155,143,122,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+          '<svg width="20" height="20" viewBox="0 0 24 24" fill="#9b8f7a"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>' +
         '</div>' +
-        '<div style="flex:1;min-width:0">' +
-          '<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + e.mosque.name + '</div>' +
-          '<div style="font-size:12px;color:var(--muted)">' + e.mosque.address + '</div>' +
+        '<div style="flex:1;min-width:0;padding-right:60px">' +
+          '<div style="font-size:14px;font-weight:600;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + e.mosque.name + '</div>' +
+          '<span style="font-size:12px;color:var(--muted)">Jummah: ' + e.mosque.jummah + '</span>' +
         '</div>' +
-        '<span class="area-badge">' + e.mosque.area + '</span>' +
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--muted);flex-shrink:0"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>' +
       '</div>';
     }).join('');
@@ -685,6 +692,10 @@ function renderJummah(mosques) {
 
 
 var CITY_AREAS = {
+  'London': ['Tower Hamlets','Newham','Redbridge']
+};
+
+var BOROUGH_AREAS = {
   'Tower Hamlets': ['Bethnal Green','Bow','Docklands','Limehouse','Mile End','Poplar','Shadwell','Shoreditch','Stepney','Wapping','Whitechapel'],
   'Newham': ['Forest Gate','East Ham','Plaistow','Stratford','Canning Town'],
   'Redbridge': ['Ilford','Seven Kings','Newbury Park','Woodford','Chadwell Heath']
@@ -700,9 +711,17 @@ function updateAreaDropdown() {
   if (!cityEl || !areaEl) return;
   var city = cityEl.value;
   var prevArea = areaEl.value;
-  var areas = city && CITY_AREAS[city] ? CITY_AREAS[city] : Object.values(CITY_AREAS).reduce(function(a,b){return a.concat(b);}, []);
-  areaEl.innerHTML = '<option value="">All Areas</option>' +
-    areas.map(function(a){ return '<option value="' + a + '">' + a + '</option>'; }).join('');
+  // Areas dropdown shows boroughs (Tower Hamlets, Newham, Redbridge) then sub-areas
+  var boroughs = Object.keys(BOROUGH_AREAS);
+  var opts = '<option value="">All Areas</option>';
+  boroughs.forEach(function(b) {
+    opts += '<optgroup label="' + b + '">';
+    BOROUGH_AREAS[b].forEach(function(a) {
+      opts += '<option value="' + a + '">' + a + '</option>';
+    });
+    opts += '</optgroup>';
+  });
+  areaEl.innerHTML = opts;
   if (prevArea) areaEl.value = prevArea;
 }
 
@@ -712,10 +731,14 @@ function filterMosques() {
   var q = input ? input.value.toLowerCase() : '';
   var city = document.getElementById('city-select') ? document.getElementById('city-select').value : '';
   var area = document.getElementById('area-select') ? document.getElementById('area-select').value : '';
+  var allAreas = Object.values(BOROUGH_AREAS).reduce(function(a,b){return a.concat(b);}, []);
   var filtered = MOSQUES.filter(function(m) {
-    var cityAreas = city && CITY_AREAS[city] ? CITY_AREAS[city] : null;
-    var cityMatch = !cityAreas || cityAreas.indexOf(m.area) > -1;
+    var cityMatch = !city; // London = all
     var areaMatch = !area || m.area === area;
+    // If area is a borough name, match all sub-areas
+    if (area && BOROUGH_AREAS[area]) {
+      areaMatch = BOROUGH_AREAS[area].indexOf(m.area) > -1;
+    }
     var textMatch = !q || m.name.toLowerCase().indexOf(q) > -1 || (m.address||'').toLowerCase().indexOf(q) > -1;
     return cityMatch && areaMatch && textMatch;
   });
@@ -807,7 +830,53 @@ function renderHomeGrid(mosques, label) {
   el.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px">' +
     list.map(function(m,i){ return cardHTML(m, MOSQUES.indexOf(m) > -1 ? MOSQUES.indexOf(m) : i); }).join('') + '</div>';
   var lbl = document.getElementById('home-location-label');
-  if (lbl) lbl.textContent = label || 'Tower Hamlets mosques';
+  if (lbl) { lbl.textContent = label || ''; lbl.style.display = label ? 'block' : 'none'; }
+}
+
+function renderHomeServices(nearestMosques) {
+  var el = document.getElementById('home-services-grid');
+  if (!el) return;
+  // Collect services from nearby mosques
+  var results = [];
+  var areas = nearestMosques ? nearestMosques.map(function(m){ return m.area; }) : [];
+  MOSQUES.forEach(function(m, mi) {
+    if (!m.services) return;
+    var isNearby = !nearestMosques || areas.indexOf(m.area) > -1;
+    if (!isNearby) return;
+    m.services.forEach(function(s) {
+      if (results.length < 5) results.push({service: s, mosque: m, mosqueIdx: mi});
+    });
+  });
+  // Fallback if not enough nearby services
+  if (results.length < 5) {
+    MOSQUES.forEach(function(m, mi) {
+      if (!m.services) return;
+      m.services.forEach(function(s) {
+        if (results.length < 5 && !results.some(function(r){ return r.mosque === m && r.service.name === s.name; })) {
+          results.push({service: s, mosque: m, mosqueIdx: mi});
+        }
+      });
+    });
+  }
+  if (!results.length) { el.innerHTML = ''; return; }
+  el.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px">' +
+    results.map(function(r) {
+      var s = r.service, m = r.mosque, c = svcColor(s.type);
+      return '<div class="service-card" onclick="openDetail(' + r.mosqueIdx + ')">' +
+        '<div class="service-icon" style="background:' + c.bg + '">' +
+          '<svg viewBox="0 0 24 24" fill="' + c.color + '">' + svcIcon(s.type) + '</svg>' +
+        '</div>' +
+        '<div class="service-body">' +
+          '<div class="service-name">' + s.name + '</div>' +
+          '<div class="service-mosque">' + m.name + '</div>' +
+          '<div class="service-meta">' +
+            '<span class="service-type-badge" style="background:' + c.bg + ';color:' + c.color + '">' + s.type + '</span>' +
+            (s.days ? '<span style="font-size:11px;color:var(--muted)">' + s.days + (s.time ? ' &bull; ' + s.time : '') + '</span>' : '') +
+          '</div>' +
+        '</div>' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:var(--muted);flex-shrink:0"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>' +
+      '</div>';
+    }).join('') + '</div>';
 }
 
 function initHomeLocation() {
@@ -839,8 +908,10 @@ function initHomeLocation() {
     var nearest = scored.slice(0, 5).map(function(s){ return s.m; });
     var nearestArea = nearest[0] ? nearest[0].area : 'your area';
     renderHomeGrid(nearest, 'Nearest to you \u2022 ' + nearestArea);
+    renderHomeServices(nearest);
   }, function() {
-    renderHomeGrid(null, 'Tower Hamlets mosques');
+    renderHomeGrid(null, '');
+    renderHomeServices(null);
   }, { timeout: 5000 });
 }
 
@@ -1127,6 +1198,7 @@ initAreaFilters();
 initServiceFilters();
 initJummahFilters();
 initSlider();
+renderHomeServices(null);
 renderList(MOSQUES);
 filterServices();
 </script>
