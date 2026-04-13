@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mosque Admin - Masajid</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117; --card: #141c28; --card2: #1c2535;
+  --gold: #f0a500; --gold2: #e8920a;
+  --text: #e8edf5; --muted: #8a9ab5;
+  --border: rgba(255,255,255,0.07);
+  --radius: 16px;
+  --green: #10b981; --red: #ef4444;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* HEADER */
+.header { background: rgba(13,17,23,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+.logo { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; }
+.logo svg { width: 26px; height: 26px; }
+.mosque-pill { background: rgba(240,165,0,0.12); border: 1px solid rgba(240,165,0,0.25); color: var(--gold); font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 20px; }
+
+/* LOGIN */
+#login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+.login-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 40px; max-width: 420px; width: 100%; }
+.login-card h1 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.login-card p { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
+.field input, .field select, .field textarea { width: 100%; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.2s; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: rgba(240,165,0,0.4); }
+.field input::placeholder, .field textarea::placeholder { color: var(--muted); }
+.field textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+.field select option { background: var(--card2); }
+.btn { width: 100%; background: var(--gold); color: #0d1117; font-size: 14px; font-weight: 700; padding: 12px; border-radius: 10px; border: none; cursor: pointer; font-family: inherit; transition: background 0.2s; }
+.btn:hover { background: var(--gold2); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-secondary { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: rgba(255,255,255,0.1); }
+.error-msg { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; font-size: 13px; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; }
+.success-msg { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); color: #6ee7b7; font-size: 13px; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; }
+
+/* DASHBOARD */
+#dashboard { display: none; padding: 24px; max-width: 760px; margin: 0 auto; }
+.section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.section-title span { font-size: 13px; font-weight: 400; color: var(--muted); }
+.dash-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+.dash-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; color: var(--text); }
+.dash-card h3 svg { width: 16px; height: 16px; color: var(--gold); }
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.save-row { display: flex; gap: 10px; margin-top: 16px; }
+.save-row .btn { width: auto; flex: 1; }
+
+/* PRAYER TIME ROW */
+.pt-edit-row { display: grid; grid-template-columns: 100px 1fr 1fr; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--border); }
+.pt-edit-row:first-child { border-top: none; }
+.pt-label { font-size: 13px; font-weight: 600; color: var(--text); }
+.pt-edit-row input { padding: 8px 10px; font-size: 13px; }
+
+/* SERVICES */
+.service-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--border); }
+.service-item:first-child { border-top: none; }
+.service-info { flex: 1; }
+.service-info .sname { font-size: 14px; font-weight: 500; }
+.service-info .smeta { font-size: 12px; color: var(--muted); }
+.del-btn { background: rgba(239,68,68,0.1); border: none; color: #fca5a5; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.add-service-form { background: var(--card2); border-radius: 10px; padding: 16px; margin-top: 12px; }
+.add-service-form .row-2 { gap: 10px; }
+.type-badge { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 500; margin-left: 6px; }
+.t-Education { background: rgba(99,102,241,0.15); color: #818cf8; }
+.t-Youth { background: rgba(16,185,129,0.15); color: #34d399; }
+.t-Welfare { background: rgba(240,165,0,0.15); color: #f0a500; }
+.t-Community { background: rgba(236,72,153,0.15); color: #f472b6; }
+
+/* ANNOUNCEMENTS */
+.announcement-item { padding: 12px 0; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+.announcement-item:first-child { border-top: none; }
+.ann-body { flex: 1; }
+.ann-body .atitle { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+.ann-body .adesc { font-size: 12px; color: var(--muted); }
+
+/* STATUS */
+.sub-tab { padding: 7px 14px; font-size: 12px; font-weight: 500; border-radius: 8px; cursor: pointer; border: 1px solid var(--border); background: var(--card2); color: var(--muted); font-family: inherit; transition: all 0.2s; }
+.sub-tab.active { background: rgba(240,165,0,0.15); color: var(--gold); border-color: rgba(240,165,0,0.3); }
+.mt-cell { background: var(--card2); border: 1px solid var(--border); border-radius: 4px; padding: 4px 6px; color: var(--text); font-size: 11px; font-family: inherit; outline: none; width: 62px; text-align: center; }
+.mt-cell:focus { border-color: rgba(240,165,0,0.4); }
+.mt-head { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 8px; text-align: center; white-space: nowrap; }
+.mt-date { font-size: 11px; font-weight: 600; color: var(--text); padding: 6px 8px; white-space: nowrap; }
+.mt-row:nth-child(even) td { background: rgba(255,255,255,0.02); }
+.csv-head { background: rgba(240,165,0,0.08); font-size: 11px; font-weight: 600; color: var(--gold); padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.csv-cell { font-size: 11px; color: var(--text); padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.03); white-space: nowrap; }
+.yr-month { background: var(--card2); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; font-size: 13px; }
+.yr-month.complete { border-left: 3px solid var(--green); }
+.yr-month.empty { border-left: 3px solid rgba(255,255,255,0.1); }
+.saving-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; margin-right: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* TABS */
+.tabs { display: flex; gap: 4px; background: var(--card2); border-radius: 10px; padding: 4px; margin-bottom: 20px; }
+.tab { flex: 1; padding: 8px; text-align: center; font-size: 13px; font-weight: 500; border-radius: 7px; cursor: pointer; border: none; background: none; color: var(--muted); font-family: inherit; transition: all 0.2s; }
+.tab.active { background: var(--card); color: var(--text); }
+
+@media (max-width: 600px) {
+  .row-2, .row-3 { grid-template-columns: 1fr; }
+  .pt-edit-row { grid-template-columns: 80px 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-card">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+        <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z" fill="#f0a500"/>
+      </svg>
+      <span style="font-size:20px;font-weight:700">Masajid</span>
+      <span style="font-size:12px;color:var(--muted);margin-left:4px">Admin</span>
+    </div>
+    <h1>Mosque Portal</h1>
+    <p>Manage your mosque profile, prayer times, services and announcements.</p>
+    <div id="login-error" style="display:none" class="error-msg"></div>
+    <div class="field">
+      <label>Mosque ID</label>
+      <input type="text" id="mosque-id-input" placeholder="e.g. east-london-mosque" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>PIN</label>
+      <input type="password" id="pin-input" placeholder="4-digit PIN" maxlength="6" autocomplete="off">
+    </div>
+    <button class="btn" onclick="doLogin()">Sign In</button>
+    <p style="font-size:12px;color:var(--muted);margin-top:16px;text-align:center">Don't have access? <a href="/cdn-cgi/l/email-protection#6c0d080105022c010d1f0d060508420d1c1c" style="color:var(--gold)">Request access</a></p>
+  </div>
+</div>
+
+<div id="header" style="display:none">
+  <div class="header">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z" fill="#f0a500"/>
+      </svg>
+      Masajid Admin
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="mosque-pill" id="header-mosque-name"></span>
+      <button onclick="doLogout()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;font-family:inherit">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<div id="dashboard">
+  <div style="margin-bottom:24px">
+    <h1 style="font-size:24px;font-weight:800;margin-bottom:4px" id="dash-mosque-title"></h1>
+    <p style="font-size:13px;color:var(--muted)" id="dash-mosque-address"></p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('times')">Prayer Times</button>
+    <button class="tab" onclick="switchTab('profile')">Profile</button>
+    <button class="tab" onclick="switchTab('services')">Services</button>
+    <button class="tab" onclick="switchTab('announce')">Announcements</button>
+  </div>
+
+  <!-- PRAYER TIMES TAB -->
+  <div id="tab-times">
+
+    <!-- Sub-tabs -->
+    <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="sub-tab active" id="st-today" onclick="switchSubTab('today')">Today</button>
+      <button class="sub-tab" id="st-monthly" onclick="switchSubTab('monthly')">Monthly</button>
+      <button class="sub-tab" id="st-upload" onclick="switchSubTab('upload')">Upload CSV</button>
+      <button class="sub-tab" id="st-jummah" onclick="switchSubTab('jummah')">Jummah</button>
+    </div>
+
+    <!-- TODAY sub-tab -->
+    <div id="subt-today">
+      <div class="dash-card">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 15h-1v-5h1v5zm0-8h-1V7h1v2z"/></svg>
+          Today's Times
+          <span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:4px" id="today-date-label"></span>
+        </h3>
+        <div style="display:grid;grid-template-columns:100px 1fr 1fr;gap:10px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)">
+          <span style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Prayer</span>
+          <span style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Begins</span>
+          <span style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Jama'ah</span>
+        </div>
+        <div id="pt-rows"></div>
+        <div class="save-row">
+          <button class="btn" onclick="saveTodayTimes()">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MONTHLY sub-tab -->
+    <div id="subt-monthly" style="display:none">
+      <div class="dash-card">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+          Monthly Timetable
+        </h3>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+          <select id="month-select" onchange="renderMonthTable()" style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none">
+            <option value="0">January</option><option value="1">February</option>
+            <option value="2">March</option><option value="3">April</option>
+            <option value="4">May</option><option value="5">June</option>
+            <option value="6">July</option><option value="7">August</option>
+            <option value="8">September</option><option value="9">October</option>
+            <option value="10">November</option><option value="11">December</option>
+          </select>
+          <select id="year-select" onchange="renderMonthTable()" style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none">
+            <option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option>
+          </select>
+          <button class="btn" style="padding:8px 16px;font-size:13px;width:auto" onclick="saveMonthTable()">Save Month</button>
+          <button class="btn btn-secondary" style="padding:8px 16px;font-size:13px;width:auto" onclick="copyFromPrevMonth()">Copy from prev month</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table id="month-table" style="width:100%;border-collapse:collapse;font-size:12px;min-width:700px">
+            <thead id="month-thead"></thead>
+            <tbody id="month-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPLOAD CSV sub-tab -->
+    <div id="subt-upload" style="display:none">
+      <div class="dash-card">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+          Upload Full Year CSV
+        </h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6">Upload a CSV with one row per day. Download the template to see the required format.</p>
+        <div style="background:var(--card2);border-radius:10px;padding:16px;margin-bottom:16px;font-size:12px;color:var(--muted)">
+          <strong style="color:var(--text);display:block;margin-bottom:6px">Required CSV columns:</strong>
+          Date, Fajr Begins, Fajr Jamaah, Sunrise, Zuhr Begins, Zuhr Jamaah, Asr Begins, Asr Jamaah, Maghrib Begins, Maghrib Jamaah, Isha Begins, Isha Jamaah
+          <br><br>
+          <strong style="color:var(--text)">Date format:</strong> DD/MM/YYYY &nbsp;&nbsp; <strong style="color:var(--text)">Time format:</strong> HH:MM (24hr)
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+          <button class="btn btn-secondary" style="width:auto;padding:10px 16px;font-size:13px" onclick="downloadTemplate()">Download Template</button>
+          <label style="background:rgba(240,165,0,0.12);border:1px solid rgba(240,165,0,0.25);color:var(--gold);font-size:13px;font-weight:600;padding:10px 16px;border-radius:10px;cursor:pointer">
+            Choose CSV File
+            <input type="file" id="csv-upload" accept=".csv" style="display:none" onchange="handleCSVUpload(event)">
+          </label>
+        </div>
+        <div id="csv-preview" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <span style="font-size:13px;font-weight:600" id="csv-preview-label"></span>
+            <button class="btn" style="width:auto;padding:8px 16px;font-size:13px" onclick="saveCSVData()">Save Timetable</button>
+          </div>
+          <div style="overflow-x:auto;border:1px solid var(--border);border-radius:8px">
+            <table id="csv-preview-table" style="width:100%;border-collapse:collapse;font-size:11px;min-width:800px"></table>
+          </div>
+        </div>
+        <div id="csv-error" style="display:none" class="error-msg"></div>
+      </div>
+
+      <div class="dash-card">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+          Yearly Overview
+        </h3>
+        <div id="yearly-overview" style="font-size:13px;color:var(--muted)">No timetable uploaded yet.</div>
+      </div>
+    </div>
+
+    <!-- JUMMAH sub-tab -->
+    <div id="subt-jummah" style="display:none">
+      <div class="dash-card">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+          Jummah Prayer Times
+        </h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Set your Jummah khutbah start times. These show on the mosque listing.</p>
+        <div class="field">
+          <label>Jummah Times (comma separated)</label>
+          <input type="text" id="jummah-times-input" placeholder="e.g. 1:00 PM, 1:45 PM, 2:30 PM">
+        </div>
+        <div class="field">
+          <label>Khutbah Language</label>
+          <input type="text" id="jummah-lang" placeholder="e.g. English, Bengali, Urdu">
+        </div>
+        <div class="field">
+          <label>Notes (optional)</label>
+          <textarea id="jummah-notes" placeholder="e.g. Sisters welcome. Overflow in car park during summer." style="min-height:60px"></textarea>
+        </div>
+        <div class="save-row">
+          <button class="btn" onclick="saveJummah()">Save Jummah</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PROFILE TAB -->
+  <div id="tab-profile" style="display:none">
+    <div class="dash-card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        Mosque Information
+      </h3>
+      <div class="field">
+        <label>Mosque Name</label>
+        <input type="text" id="profile-name" placeholder="Full mosque name">
+      </div>
+      <div class="field">
+        <label>Address</label>
+        <input type="text" id="profile-address" placeholder="Street address, postcode">
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label>Phone</label>
+          <input type="text" id="profile-phone" placeholder="020 XXXX XXXX">
+        </div>
+        <div class="field">
+          <label>Website</label>
+          <input type="text" id="profile-website" placeholder="https://...">
+        </div>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="profile-email" placeholder="info@mosque.org">
+      </div>
+      <div class="field">
+        <label>About</label>
+        <textarea id="profile-about" placeholder="Brief description of your mosque and its role in the community..."></textarea>
+      </div>
+      <div class="field">
+        <label>Facilities (comma separated)</label>
+        <input type="text" id="profile-facilities" placeholder="e.g. Sisters Section, Parking, Wudu Area, Disabled Access">
+      </div>
+      <div class="save-row">
+        <button class="btn" onclick="saveProfile()">Save Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES TAB -->
+  <div id="tab-services" style="display:none">
+    <div class="dash-card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+        Current Services
+        <button onclick="showAddService()" style="margin-left:auto;background:rgba(240,165,0,0.12);border:1px solid rgba(240,165,0,0.25);color:var(--gold);font-size:12px;padding:4px 12px;border-radius:8px;cursor:pointer;font-family:inherit">+ Add</button>
+      </h3>
+      <div id="services-list"></div>
+      <div id="add-service-form" style="display:none" class="add-service-form">
+        <div class="row-2">
+          <div class="field" style="margin-bottom:10px">
+            <label>Service Name</label>
+            <input type="text" id="new-svc-name" placeholder="e.g. Quran Classes">
+          </div>
+          <div class="field" style="margin-bottom:10px">
+            <label>Type</label>
+            <select id="new-svc-type">
+              <option>Education</option>
+              <option>Youth</option>
+              <option>Welfare</option>
+              <option>Community</option>
+            </select>
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field" style="margin-bottom:10px">
+            <label>Days</label>
+            <input type="text" id="new-svc-days" placeholder="e.g. Sat & Sun">
+          </div>
+          <div class="field" style="margin-bottom:10px">
+            <label>Time</label>
+            <input type="text" id="new-svc-time" placeholder="e.g. 10:00 AM">
+          </div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn" style="padding:8px 16px;font-size:13px" onclick="addService()">Add Service</button>
+          <button class="btn btn-secondary" style="padding:8px 16px;font-size:13px" onclick="document.getElementById('add-service-form').style.display='none'">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANNOUNCEMENTS TAB -->
+  <div id="tab-announce" style="display:none">
+    <div class="dash-card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+        Announcements
+        <button onclick="showAddAnnouncement()" style="margin-left:auto;background:rgba(240,165,0,0.12);border:1px solid rgba(240,165,0,0.25);color:var(--gold);font-size:12px;padding:4px 12px;border-radius:8px;cursor:pointer;font-family:inherit">+ Add</button>
+      </h3>
+      <div id="announcements-list"></div>
+      <div id="add-ann-form" style="display:none;background:var(--card2);border-radius:10px;padding:16px;margin-top:12px">
+        <div class="field" style="margin-bottom:10px">
+          <label>Title</label>
+          <input type="text" id="new-ann-title" placeholder="e.g. Ramadan Timetable 2026">
+        </div>
+        <div class="field" style="margin-bottom:10px">
+          <label>Description</label>
+          <textarea id="new-ann-desc" placeholder="Details of the announcement..." style="min-height:60px"></textarea>
+        </div>
+        <div class="row-2">
+          <div class="field" style="margin-bottom:10px">
+            <label>Date (optional)</label>
+            <input type="date" id="new-ann-date">
+          </div>
+          <div class="field" style="margin-bottom:10px">
+            <label>Category</label>
+            <select id="new-ann-cat">
+              <option>General</option>
+              <option>Event</option>
+              <option>Reminder</option>
+              <option>Urgent</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn" style="padding:8px 16px;font-size:13px" onclick="addAnnouncement()">Post</button>
+          <button class="btn btn-secondary" style="padding:8px 16px;font-size:13px" onclick="document.getElementById('add-ann-form').style.display='none'">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="save-status" style="display:none;position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 20px;font-size:13px;display:flex;align-items:center;gap:8px;z-index:99"></div>
+</div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
+// Replace this with your Google Apps Script Web App URL
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+
+// Demo mosque database — in production this comes from Google Sheets
+var MOSQUE_DB = {
+  'east-london-mosque': { pin: '1234', name: 'East London Mosque', address: '82-92 Whitechapel Road, London E1 1JQ', area: 'Whitechapel' },
+  'dar-al-arqam': { pin: '2345', name: 'Dar al Arqam', address: '1 Kitcat Terrace, Bow, London E3 2SA', area: 'Bow' },
+  'markazi-masjid': { pin: '3456', name: 'Markazi Masjid', address: 'Christian Street, London E1 1RS', area: 'Whitechapel' },
+  'bow-central': { pin: '4567', name: 'Bow Central Mosque', address: 'Bow, London E3', area: 'Bow' },
+  'redbridge-islamic-centre': { pin: '5678', name: 'Redbridge Islamic Centre', address: '179 Eastern Avenue, Ilford, IG4 5AW', area: 'Ilford' }
+};
+
+var PRAYER_NAMES = ['Fajr', 'Zuhr', 'Asr', 'Maghrib', 'Isha'];
+var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var currentMosque = null;
+var currentData = {};
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+function doLogin() {
+  var id = document.getElementById('mosque-id-input').value.trim().toLowerCase();
+  var pin = document.getElementById('pin-input').value.trim();
+  var errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+
+  if (!id || !pin) { showError('Please enter your Mosque ID and PIN.'); return; }
+
+  var mosque = MOSQUE_DB[id];
+  if (!mosque || mosque.pin !== pin) {
+    showError('Incorrect Mosque ID or PIN. Please contact admin@masajid.app for access.');
+    return;
+  }
+
+  currentMosque = { id: id, pin: mosque.pin, name: mosque.name, address: mosque.address, area: mosque.area };
+  loadDashboard();
+}
+
+function showError(msg) {
+  var el = document.getElementById('login-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function doLogout() {
+  currentMosque = null;
+  currentData = {};
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('header').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('mosque-id-input').value = '';
+  document.getElementById('pin-input').value = '';
+}
+
+// ─── DASHBOARD ────────────────────────────────────────────────────────────────
+function loadDashboard() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('header').style.display = 'block';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('header-mosque-name').textContent = currentMosque.name;
+  document.getElementById('dash-mosque-title').textContent = currentMosque.name;
+  document.getElementById('dash-mosque-address').textContent = currentMosque.address;
+
+  // Load saved data from localStorage (in production: Google Sheets)
+  var saved = localStorage.getItem('masajid-' + currentMosque.id);
+  currentData = saved ? JSON.parse(saved) : getDefaultData();
+
+  renderAll();
+}
+
+function getDefaultData() {
+  return {
+    prayerTimes: { Fajr:{begins:'05:18',jamaah:'05:48'}, Zuhr:{begins:'12:15',jamaah:'12:45'}, Asr:{begins:'14:41',jamaah:'15:00'}, Maghrib:{begins:'19:32',jamaah:'19:39'}, Isha:{begins:'21:00',jamaah:'21:30'} },
+    jummah: { times: '1:30 PM', lang: 'English', notes: '' },
+    timetable: {},
+    profile: { phone: '', website: '', email: '', about: '', facilities: '' },
+    services: [],
+    announcements: []
+  };
+}
+
+function saveData() {
+  localStorage.setItem('masajid-' + currentMosque.id, JSON.stringify(currentData));
+  // In production: POST to Google Apps Script
+  postToSheet(currentData);
+}
+
+function postToSheet(data) {
+  if (APPS_SCRIPT_URL === 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec') return;
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ mosqueId: currentMosque.id, data: data })
+  }).catch(function() {});
+}
+
+function showSaveStatus(msg, ok) {
+  var el = document.getElementById('save-status');
+  el.style.display = 'flex';
+  el.innerHTML = (ok
+    ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="#10b981"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>'
+    : '<span class="saving-spinner"></span>') + msg;
+  if (ok) setTimeout(function() { el.style.display = 'none'; }, 2500);
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function renderAll() {
+  renderTodayTimes();
+  renderProfile();
+  renderServices();
+  renderAnnouncements();
+  renderYearlyOverview();
+  document.getElementById('today-date-label').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  var now = new Date();
+  document.getElementById('month-select').value = now.getMonth();
+  document.getElementById('year-select').value = now.getFullYear();
+  renderMonthTable();
+  var jd = currentData.jummah || {};
+  document.getElementById('jummah-times-input').value = typeof jd === 'string' ? jd : (jd.times || '');
+  document.getElementById('jummah-lang').value = jd.lang || '';
+  document.getElementById('jummah-notes').value = jd.notes || '';
+}
+
+function getTodayTimes() {
+  var today = fmtDateKey(new Date());
+  return (currentData.timetable || {})[today] || currentData.prayerTimes || {};
+}
+
+function renderTodayTimes() {
+  var pt = getTodayTimes();
+  document.getElementById('pt-rows').innerHTML = PRAYER_NAMES.map(function(name) {
+    var t = pt[name] || { begins: '', jamaah: '' };
+    return '<div class="pt-edit-row"><span class="pt-label">' + name + '</span>' +
+      '<input type="time" class="mt-cell" id="pt-begins-' + name + '" value="' + (t.begins||'') + '" style="width:100%">' +
+      '<input type="time" class="mt-cell" id="pt-jamaah-' + name + '" value="' + (t.jamaah||'') + '" style="width:100%">' +
+    '</div>';
+  }).join('');
+}
+
+function renderProfile() {
+  var p = currentData.profile || {};
+  document.getElementById('profile-name').value = currentMosque.name;
+  document.getElementById('profile-address').value = currentMosque.address;
+  document.getElementById('profile-phone').value = p.phone || '';
+  document.getElementById('profile-website').value = p.website || '';
+  document.getElementById('profile-email').value = p.email || '';
+  document.getElementById('profile-about').value = p.about || '';
+  document.getElementById('profile-facilities').value = p.facilities || '';
+}
+
+function renderServices() {
+  var services = currentData.services || [];
+  var el = document.getElementById('services-list');
+  if (!services.length) {
+    el.innerHTML = '<p style="font-size:13px;color:var(--muted);padding:8px 0">No services added yet.</p>';
+    return;
+  }
+  el.innerHTML = services.map(function(s, i) {
+    return '<div class="service-item">' +
+      '<div class="service-info">' +
+        '<div class="sname">' + s.name + '<span class="type-badge t-' + s.type + '">' + s.type + '</span></div>' +
+        '<div class="smeta">' + (s.days || '') + (s.time ? ' &bull; ' + s.time : '') + '</div>' +
+      '</div>' +
+      '<button class="del-btn" onclick="deleteService(' + i + ')">&#x2715;</button>' +
+    '</div>';
+  }).join('');
+}
+
+function renderAnnouncements() {
+  var anns = currentData.announcements || [];
+  var el = document.getElementById('announcements-list');
+  if (!anns.length) {
+    el.innerHTML = '<p style="font-size:13px;color:var(--muted);padding:8px 0">No announcements yet.</p>';
+    return;
+  }
+  el.innerHTML = anns.map(function(a, i) {
+    return '<div class="announcement-item">' +
+      '<div class="ann-body">' +
+        '<div class="atitle">' + a.title + (a.category && a.category !== 'General' ? ' <span class="type-badge t-Community">' + a.category + '</span>' : '') + '</div>' +
+        '<div class="adesc">' + (a.date ? a.date + ' &bull; ' : '') + a.desc + '</div>' +
+      '</div>' +
+      '<button class="del-btn" onclick="deleteAnnouncement(' + i + ')">&#x2715;</button>' +
+    '</div>';
+  }).join('');
+}
+
+// ─── SAVE ACTIONS ─────────────────────────────────────────────────────────────
+function saveTodayTimes() {
+  var today = fmtDateKey(new Date());
+  currentData.timetable = currentData.timetable || {};
+  currentData.prayerTimes = currentData.prayerTimes || {};
+  var entry = {};
+  PRAYER_NAMES.forEach(function(name) {
+    entry[name] = { begins: document.getElementById('pt-begins-' + name).value, jamaah: document.getElementById('pt-jamaah-' + name).value };
+  });
+  currentData.timetable[today] = entry;
+  currentData.prayerTimes = entry;
+  saveData();
+  showSaveStatus('Today saved', true);
+  renderYearlyOverview();
+}
+
+function saveJummah() {
+  currentData.jummah = {
+    times: document.getElementById('jummah-times-input').value.trim(),
+    lang: document.getElementById('jummah-lang').value.trim(),
+    notes: document.getElementById('jummah-notes').value.trim()
+  };
+  saveData();
+  showSaveStatus('Jummah saved', true);
+}
+
+function renderMonthTable() {
+  var month = parseInt(document.getElementById('month-select').value);
+  var year  = parseInt(document.getElementById('year-select').value);
+  var days  = new Date(year, month+1, 0).getDate();
+  var timetable = currentData.timetable || {};
+  var prayers = ['Fajr','Sunrise','Zuhr','Asr','Maghrib','Isha'];
+  var thead = '<tr><th class="mt-head" style="text-align:left">Date</th>';
+  prayers.forEach(function(p){ thead += '<th class="mt-head" colspan="2">' + p + '</th>'; });
+  thead += '</tr><tr><th></th>';
+  prayers.forEach(function(){ thead += '<th class="mt-head">Begins</th><th class="mt-head">Jama'ah</th>'; });
+  thead += '</tr>';
+  document.getElementById('month-thead').innerHTML = thead;
+  var rows = '';
+  for (var d=1;d<=days;d++) {
+    var key = pad(d)+'/'+pad(month+1)+'/'+year;
+    var entry = timetable[key] || {};
+    var dow = new Date(year,month,d).toLocaleDateString('en-GB',{weekday:'short'});
+    var isFri = new Date(year,month,d).getDay()===5;
+    rows += '<tr class="mt-row"' + (isFri?' style="background:rgba(240,165,0,0.04)"':'') + '>';
+    rows += '<td class="mt-date">'+pad(d)+' <span style="color:var(--muted)">'+dow+'</span></td>';
+    prayers.forEach(function(p) {
+      var t = entry[p] || {begins:'',jamaah:''};
+      var dis = p==='Sunrise'?' disabled style="opacity:0.3"':'';
+      rows += '<td style="padding:3px 4px"><input class="mt-cell" type="time" data-key="'+key+'" data-prayer="'+p+'" data-field="begins" value="'+(t.begins||'')+'"></td>';
+      rows += '<td style="padding:3px 4px"><input class="mt-cell" type="time" data-key="'+key+'" data-prayer="'+p+'" data-field="jamaah" value="'+(t.jamaah||'')+'">'+dis+'</td>';
+    });
+    rows += '</tr>';
+  }
+  document.getElementById('month-tbody').innerHTML = rows;
+}
+
+function saveMonthTable() {
+  currentData.timetable = currentData.timetable || {};
+  document.querySelectorAll('#month-tbody input[data-key]').forEach(function(inp) {
+    var key=inp.dataset.key, p=inp.dataset.prayer, f=inp.dataset.field;
+    if(!currentData.timetable[key]) currentData.timetable[key]={};
+    if(!currentData.timetable[key][p]) currentData.timetable[key][p]={};
+    currentData.timetable[key][p][f]=inp.value;
+  });
+  saveData(); showSaveStatus('Month saved',true); renderYearlyOverview();
+}
+
+function copyFromPrevMonth() {
+  var month=parseInt(document.getElementById('month-select').value);
+  var year=parseInt(document.getElementById('year-select').value);
+  var pm=month===0?11:month-1, py=month===0?year-1:year;
+  var days=new Date(year,month+1,0).getDate();
+  currentData.timetable=currentData.timetable||{};
+  for(var d=1;d<=days;d++){
+    var src=pad(d)+'/'+pad(pm+1)+'/'+py, dst=pad(d)+'/'+pad(month+1)+'/'+year;
+    if(currentData.timetable[src]&&!currentData.timetable[dst]) currentData.timetable[dst]=JSON.parse(JSON.stringify(currentData.timetable[src]));
+  }
+  renderMonthTable(); showSaveStatus('Copied - review and save',false);
+}
+
+var parsedCSV = null;
+function handleCSVUpload(event) {
+  var file=event.target.files[0]; if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(e){ parseAndPreviewCSV(e.target.result); };
+  reader.readAsText(file);
+}
+
+function parseAndPreviewCSV(text) {
+  document.getElementById('csv-error').style.display='none';
+  var lines=text.trim().split('\n').map(function(l){return l.trim();});
+  if(lines.length<2){showCSVError('CSV appears empty.');return;}
+  parsedCSV={};
+  for(var i=1;i<lines.length;i++){
+    if(!lines[i]) continue;
+    var c=lines[i].split(',').map(function(x){return x.trim();});
+    if(!c[0]) continue;
+    parsedCSV[c[0]]={Fajr:{begins:c[1]||'',jamaah:c[2]||''},Sunrise:{begins:c[3]||'',jamaah:''},Zuhr:{begins:c[4]||'',jamaah:c[5]||''},Asr:{begins:c[6]||'',jamaah:c[7]||''},Maghrib:{begins:c[8]||'',jamaah:c[9]||''},Isha:{begins:c[10]||'',jamaah:c[11]||''}};
+  }
+  var count=Object.keys(parsedCSV).length;
+  document.getElementById('csv-preview-label').textContent=count+' days parsed';
+  var rows=Object.keys(parsedCSV).slice(0,10).map(function(date){
+    var e=parsedCSV[date];
+    return '<tr><td class="csv-cell" style="font-weight:600">'+date+'</td><td class="csv-cell">'+e.Fajr.begins+'</td><td class="csv-cell">'+e.Fajr.jamaah+'</td><td class="csv-cell">'+e.Sunrise.begins+'</td><td class="csv-cell">'+e.Zuhr.begins+'</td><td class="csv-cell">'+e.Zuhr.jamaah+'</td><td class="csv-cell">'+e.Asr.begins+'</td><td class="csv-cell">'+e.Asr.jamaah+'</td><td class="csv-cell">'+e.Maghrib.begins+'</td><td class="csv-cell">'+e.Maghrib.jamaah+'</td><td class="csv-cell">'+e.Isha.begins+'</td><td class="csv-cell">'+e.Isha.jamaah+'</td></tr>';
+  }).join('');
+  document.getElementById('csv-preview-table').innerHTML='<tr><th class="csv-head">Date</th><th class="csv-head">Fajr B</th><th class="csv-head">Fajr J</th><th class="csv-head">Sunrise</th><th class="csv-head">Zuhr B</th><th class="csv-head">Zuhr J</th><th class="csv-head">Asr B</th><th class="csv-head">Asr J</th><th class="csv-head">Maghr B</th><th class="csv-head">Maghr J</th><th class="csv-head">Isha B</th><th class="csv-head">Isha J</th></tr>'+rows+(count>10?'<tr><td colspan="12" class="csv-cell" style="color:var(--muted);text-align:center">...and '+(count-10)+' more rows</td></tr>':'');
+  document.getElementById('csv-preview').style.display='block';
+}
+
+function saveCSVData() {
+  if(!parsedCSV) return;
+  currentData.timetable=Object.assign(currentData.timetable||{},parsedCSV);
+  saveData(); renderYearlyOverview(); showSaveStatus(Object.keys(parsedCSV).length+' days saved',true);
+}
+
+function showCSVError(msg){var el=document.getElementById('csv-error');el.textContent=msg;el.style.display='block';}
+
+function downloadTemplate() {
+  var rows=['Date,Fajr Begins,Fajr Jamaah,Sunrise,Zuhr Begins,Zuhr Jamaah,Asr Begins,Asr Jamaah,Maghrib Begins,Maghrib Jamaah,Isha Begins,Isha Jamaah'];
+  var year=new Date().getFullYear();
+  for(var m=0;m<12;m++){var days=new Date(year,m+1,0).getDate();for(var d=1;d<=days;d++) rows.push(pad(d)+'/'+pad(m+1)+'/'+year+',,,,,,,,,,,');}
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv'}));
+  a.download='prayer-timetable-'+year+'.csv'; a.click();
+}
+
+function renderYearlyOverview() {
+  var timetable=currentData.timetable||{}, year=new Date().getFullYear();
+  var html='<div style="display:flex;flex-direction:column;gap:6px">';
+  var MONTHS2=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  for(var m=0;m<12;m++){
+    var days=new Date(year,m+1,0).getDate(), filled=0;
+    for(var d=1;d<=days;d++){var key=pad(d)+'/'+pad(m+1)+'/'+year; if(timetable[key]&&timetable[key].Fajr&&timetable[key].Fajr.begins) filled++;}
+    var pct=Math.round(filled/days*100);
+    html+='<div class="yr-month '+(pct===100?'complete':'empty')+'"><span>'+MONTHS2[m]+' '+year+'</span><div style="display:flex;align-items:center;gap:10px"><div style="width:100px;height:4px;background:rgba(255,255,255,0.06);border-radius:2px"><div style="width:'+pct+'%;height:4px;background:'+(pct===100?'var(--green)':'var(--gold)')+'border-radius:2px"></div></div><span style="font-size:12px;color:var(--muted);min-width:60px;text-align:right">'+filled+'/'+days+' days</span></div></div>';
+  }
+  html+='</div>';
+  var el=document.getElementById('yearly-overview'); if(el) el.innerHTML=html;
+}
+
+function switchSubTab(tab) {
+  ['today','monthly','upload','jummah'].forEach(function(t){
+    document.getElementById('subt-'+t).style.display=t===tab?'block':'none';
+    document.getElementById('st-'+t).classList.toggle('active',t===tab);
+  });
+}
+
+function pad(n){return n<10?'0'+n:''+n;}
+function fmtDateKey(d){return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear();}
+
+function saveProfile() {
+  currentData.profile = {
+    phone: document.getElementById('profile-phone').value.trim(),
+    website: document.getElementById('profile-website').value.trim(),
+    email: document.getElementById('profile-email').value.trim(),
+    about: document.getElementById('profile-about').value.trim(),
+    facilities: document.getElementById('profile-facilities').value.trim()
+  };
+  saveData();
+  showSaveStatus('Profile saved', true);
+}
+
+function showAddService() {
+  var f = document.getElementById('add-service-form');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+function addService() {
+  var name = document.getElementById('new-svc-name').value.trim();
+  if (!name) return;
+  currentData.services = currentData.services || [];
+  currentData.services.push({
+    name: name,
+    type: document.getElementById('new-svc-type').value,
+    days: document.getElementById('new-svc-days').value.trim(),
+    time: document.getElementById('new-svc-time').value.trim()
+  });
+  saveData();
+  document.getElementById('add-service-form').style.display = 'none';
+  document.getElementById('new-svc-name').value = '';
+  document.getElementById('new-svc-days').value = '';
+  document.getElementById('new-svc-time').value = '';
+  renderServices();
+  showSaveStatus('Service added', true);
+}
+
+function deleteService(i) {
+  currentData.services.splice(i, 1);
+  saveData();
+  renderServices();
+  showSaveStatus('Service removed', true);
+}
+
+function showAddAnnouncement() {
+  var f = document.getElementById('add-ann-form');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+function addAnnouncement() {
+  var title = document.getElementById('new-ann-title').value.trim();
+  if (!title) return;
+  currentData.announcements = currentData.announcements || [];
+  currentData.announcements.unshift({
+    title: title,
+    desc: document.getElementById('new-ann-desc').value.trim(),
+    date: document.getElementById('new-ann-date').value,
+    category: document.getElementById('new-ann-cat').value
+  });
+  saveData();
+  document.getElementById('add-ann-form').style.display = 'none';
+  document.getElementById('new-ann-title').value = '';
+  document.getElementById('new-ann-desc').value = '';
+  document.getElementById('new-ann-date').value = '';
+  renderAnnouncements();
+  showSaveStatus('Announcement posted', true);
+}
+
+function deleteAnnouncement(i) {
+  currentData.announcements.splice(i, 1);
+  saveData();
+  renderAnnouncements();
+  showSaveStatus('Announcement removed', true);
+}
+
+// ─── TABS ─────────────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  ['times','profile','services','announce'].forEach(function(t) {
+    document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(function(b, i) {
+    b.classList.toggle('active', ['times','profile','services','announce'][i] === tab);
+  });
+}
+
+// Allow Enter key on login
+document.getElementById('pin-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('mosque-id-inp

@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d1117">
+<style>html,body{background:#0d1117!important;margin:0!important;padding:0!important;}</style>
+<title>Masajid</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117; --bg2: #131a24; --bg3: #1a2332;
+  --card: #141c28; --card2: #1c2535;
+  --gold: #f0a500; --gold2: #e8920a;
+  --text: #e8edf5; --muted: #8a9ab5;
+  --border: rgba(255,255,255,0.07); --radius: 16px;
+}
+html, body { background: #0d1117 !important; margin: 0 !important; padding: 0 !important; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; background: #0d1117; color: #e8edf5; min-height: 100vh; overflow-x: hidden; }
+nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; color: var(--text); text-decoration: none; }
+.nav-links { display: flex; gap: 4px; align-items: center; }
+.nav-link { padding: 6px 16px; border-radius: 8px; font-size: 14px; color: var(--muted); cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; border: none; background: none; font-family: inherit; }
+.nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.nav-link.active { background: rgba(240,165,0,0.12); color: var(--gold); }
+.page { display: none; animation: fadeIn 0.3s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.hero { text-align: center; padding: 80px 32px 60px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(240,165,0,0.08) 0%, transparent 70%); pointer-events: none; }
+.hero h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; margin-bottom: 16px; }
+.hero h1 .accent { color: var(--gold); }
+.hero p { font-size: 17px; color: var(--muted); max-width: 520px; margin: 0 auto 48px; line-height: 1.6; }
+.feature-icons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.feat-icon { display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; }
+.feat-icon-box { width: 72px; height: 72px; border-radius: 18px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+.feat-icon-box:hover { transform: scale(1.06); }
+.feat-icon span { font-size: 12px; color: var(--muted); }
+.feat-qibla { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.feat-quran { background: linear-gradient(135deg, #10b981, #059669); }
+.feat-duas { background: linear-gradient(135deg, #ec4899, #db2777); }
+.feat-calendar { background: linear-gradient(135deg, #6366f1, #4f46e5); }
+.charity-banner { margin: 0 32px 48px; border-radius: var(--radius); overflow: hidden; position: relative; min-height: 180px; display: flex; align-items: flex-end; border: 1px solid var(--border); }
+.charity-bg { position: absolute; inset: 0; background: linear-gradient(to right, rgba(13,17,23,0.9) 40%, rgba(13,17,23,0.4) 100%); z-index: 1; }
+.charity-img { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&q=60') center/cover no-repeat; }
+.charity-content { position: relative; z-index: 2; padding: 28px 32px; }
+.charity-label { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #f87171; margin-bottom: 10px; text-transform: uppercase; }
+.charity-content h3 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+.charity-content p { font-size: 14px; color: var(--muted); margin-bottom: 18px; }
+.charity-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: #0d1117; font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-family: inherit; }
+.section { padding: 0 32px 48px; }
+.section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; }
+.section-header h2 { font-size: 22px; font-weight: 700; }
+.section-header p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.view-all { color: var(--gold); font-size: 14px; font-weight: 500; cursor: pointer; background: none; border: none; font-family: inherit; }
+.mosque-grid { display: flex; flex-direction: column; gap: 8px; }
+.mosque-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: border-color 0.2s, transform 0.2s; width: 100%; }
+.mosque-card:hover { border-color: rgba(240,165,0,0.3); transform: translateY(-2px); }
+.mosque-card img { width: 100%; height: 160px; object-fit: cover; display: block; }
+.mosque-card-body { padding: 16px; }
+.mosque-card-name { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.mosque-card-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 5px; font-size: 12px; color: var(--muted); }
+.mosque-card-row svg { width: 13px; height: 13px; flex-shrink: 0; margin-top: 1px; color: var(--gold); }
+.mosque-tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0; }
+.tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border); }
+.mosque-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border); margin-top: 4px; }
+.view-details { color: var(--gold); font-size: 12px; font-weight: 500; text-decoration: none; }
+.area-badge { font-size: 10px; padding: 2px 7px; border-radius: 6px; background: rgba(240,165,0,0.1); color: var(--gold); border: 1px solid rgba(240,165,0,0.2); white-space: nowrap; font-weight: 500; }
+.mosques-header { padding: 32px 32px 0; }
+.mosques-header h1 { font-size: 32px; font-weight: 800; margin-bottom: 4px; }
+.mosques-count { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+.search-bar-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+.search-wrap { flex: 1; position: relative; }
+.search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); pointer-events: none; }
+.search-wrap input { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px 10px 40px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; }
+.search-wrap input:focus { border-color: rgba(240,165,0,0.4); }
+.search-wrap input::placeholder { color: var(--muted); }
+.view-toggle { display: flex; background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.view-btn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; background: none; color: var(--muted); }
+.view-btn.active { background: rgba(240,165,0,0.15); color: var(--gold); }
+.view-btn svg { width: 18px; height: 18px; }
+.locate-btn { display: flex; align-items: center; gap: 8px; background: rgba(240,165,0,0.1); border: 1px solid rgba(240,165,0,0.25); color: var(--gold); font-size: 13px; font-weight: 500; padding: 10px 16px; border-radius: 10px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+.locate-btn svg { width: 15px; height: 15px; }
+.area-filters { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-bottom: 4px; }
+.area-btn { font-size: 12px; font-family: inherit; padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--card); color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.area-btn.active { background: rgba(240,165,0,0.15); color: var(--gold); border-color: rgba(240,165,0,0.3); }
+.mosques-results { padding: 20px 32px 48px; }
+.mosque-list-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: grid; grid-template-columns: 160px 1fr; cursor: pointer; transition: border-color 0.2s; margin-bottom: 12px; }
+.mosque-list-card:hover { border-color: rgba(240,165,0,0.3); }
+.mosque-list-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mosque-list-body { padding: 18px 20px; }
+.mosque-list-name { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.loading-state { padding: 48px; text-align: center; color: var(--muted); font-size: 14px; }
+.mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(13,17,23,0.95); backdrop-filter: blur(12px); border-top: 1px solid var(--border); padding: 8px 0 12px; z-index: 100; }
+.mobile-nav-inner { display: flex; justify-content: space-around; }
+.mobile-nav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); cursor: pointer; padding: 4px 12px; border: none; background: none; font-family: inherit; }
+.mobile-nav-btn.active { color: var(--gold); }
+.mobile-nav-btn svg { width: 22px; height: 22px; }
+@media (max-width: 768px) {
+  nav .nav-links { display: none; }
+  .mobile-nav { display: block; }
+  #masajid-app { padding-bottom: 72px; }
+  .hero { padding: 40px 20px 40px; }
+  .section { padding: 0 16px 32px; }
+  .charity-banner { margin: 0 16px 32px; }
+  .mosques-header { padding: 24px 16px 0; }
+  .mosques-results { padding: 16px 16px 32px; }
+  .mosque-grid { grid-template-columns: 1fr; }
+  .mosque-list-card { grid-template-columns: 100px 1fr; }
+  nav { padding: 0 16px; }
+}
+.detail-hero { position: relative; height: 220px; overflow: hidden; }
+.detail-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.detail-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,17,23,0.95) 0%, rgba(13,17,23,0.3) 100%); }
+.detail-back { position: absolute; top: 16px; left: 16px; z-index: 2; background: rgba(0,0,0,0.5); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.detail-hero-info { position: absolute; bottom: 16px; left: 20px; right: 20px; z-index: 2; }
+.detail-hero-info h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.detail-hero-info p { font-size: 13px; color: rgba(255,255,255,0.7); }
+.detail-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; padding-bottom: 40px; }
+.detail-card { background: var(--card2); border-radius: var(--radius); padding: 20px; }
+.detail-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+.pt-section { background: var(--card2); border-radius: var(--radius); padding: 20px; }
+.pt-section h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: white; }
+.pt-header-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; padding: 0 0 10px 0; }
+.pt-header-row span { font-size: 12px; font-weight: 600; color: var(--muted); text-align: center; }
+.pt-header-row span:first-child { text-align: left; }
+.pt-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; padding: 13px 0; border-top: 1px solid var(--border); align-items: center; }
+.pt-row .pname { font-weight: 600; font-size: 15px; }
+.pt-row .begins { font-size: 14px; color: var(--muted); text-align: center; }
+.pt-row .jamaah { font-size: 16px; font-weight: 700; text-align: center; color: var(--text); }
+.pt-row .tomorrow { font-size: 14px; color: var(--muted); text-align: center; position: relative; }
+.next-bar { display: block; width: 20px; height: 2px; background: var(--gold); border-radius: 2px; margin: 2px auto 0; }
+.jummah-section { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+.jummah-section h4 { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.jummah-times { display: flex; gap: 8px; flex-wrap: wrap; }
+.jummah-pill { background: rgba(240,165,0,0.12); border: 1px solid rgba(240,165,0,0.25); color: var(--gold); font-size: 14px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+.facility-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 15px; }
+.facility-item + .facility-item { border-top: 1px solid var(--border); }
+.fac-icon { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.fac-icon svg { width: 14px; height: 14px; color: var(--gold); }
+.contact-item { display: flex; align-items: center; gap: 14px; padding: 6px 0; font-size: 15px; }
+.contact-item + .contact-item { margin-top: 4px; }
+.con-icon { width: 44px; height: 44px; background: rgba(255,255,255,0.06); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.con-icon svg { width: 20px; height: 20px; color: var(--gold); }
+.service-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: border-color 0.2s; margin-bottom: 10px; }
+.service-card:hover { border-color: rgba(240,165,0,0.3); }
+.service-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.service-icon svg { width: 22px; height: 22px; }
+.service-body { flex: 1; min-width: 0; }
+.service-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+.service-mosque { font-size: 13px; color: var(--muted); }
+.service-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+.service-type-badge { font-size: 11px; padding: 2px 10px; border-radius: 20px; font-weight: 500; }
+.svc-detail-list { display: flex; flex-direction: column; }
+.svc-item { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-top: 1px solid var(--border); }
+.svc-item:first-child { border-top: none; }
+.svc-icon-sm { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.svc-icon-sm svg { width: 18px; height: 18px; }
+.directions-btn { width: 100%; background: var(--gold); color: #0d1117; font-size: 15px; font-weight: 700; padding: 14px; border-radius: 12px; border: none; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; }
+</style>
+</head>
+<body>
+<div id="masajid-app">
+<nav>
+  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+    <svg viewBox="0 0 28 28" fill="none"><path d="M14 2C8.477 2 4 6.477 4 12c0 3.15 1.43 5.97 3.68 7.86L14 26l6.32-6.14C22.57 17.97 24 15.15 24 12c0-5.523-4.477-10-10-10z" stroke="#f0a500" stroke-width="1.5" fill="none"/><circle cx="14" cy="12" r="2.5" fill="#f0a500"/></svg>
+    Masajid
+  </a>
+  <div class="nav-links">
+    <button class="nav-link active" data-page="home" onclick="showPage('home')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
+    </button>
+    <button class="nav-link" data-page="mosques" onclick="showPage('mosques')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Mosques
+    </button>
+    <button class="nav-link" data-page="services" onclick="showPage('services')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>Services
+    </button>
+    <button class="nav-link" data-page="jummah" onclick="showPage('jummah')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>Jummah
+    </button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="charity-banner" style="margin-top:24px">
+    <div class="charity-img"></div>
+    <div class="charity-bg"></div>
+    <div class="charity-content">
+      <div class="charity-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        Charity Campaign
+      </div>
+      <h3>Ramadan Food Drive 2026</h3>
+      <p>Help us feed 10,000 families this Ramadan</p>
+      <button class="charity-btn">Learn More</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div><h2>Nearby Mosques</h2><p>Tower Hamlets mosques</p></div>
+      <button class="view-all" onclick="showPage('mosques')">View All</button>
+    </div>
+    <div class="mosque-grid" id="home-grid"></div>
+  </div>
+</div>
+
+<!-- MOSQUES PAGE -->
+<div class="page" id="page-mosques">
+  <div class="mosques-header">
+    <h1>Mosques</h1>
+    <div class="mosques-count" id="mosque-count">Loading...</div>
+    <div class="search-bar-row">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" id="mosque-search" placeholder="Search mosques..." oninput="filterMosques()">
+      </div>
+      <button class="locate-btn" onclick="locateMe()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3A8.994 8.994 0 0013 3.06V1h-2v2.06A8.994 8.994 0 003.06 11H1v2h2.06A8.994 8.994 0 0011 20.94V23h2v-2.06A8.994 8.994 0 0020.94 13H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
+        Near me
+      </button>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:10px">
+      <select id="city-select" onchange="filterMosques()" style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%238a9ab5'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center">
+        <option value="">All Cities</option>
+        <option value="Tower Hamlets">Tower Hamlets</option>
+        <option value="Newham">Newham</option>
+        <option value="Redbridge">Redbridge</option>
+      </select>
+      <select id="area-select" onchange="filterMosques()" style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%238a9ab5'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center">
+        <option value="">All Areas</option>
+      </select>
+    </div>
+  </div>
+  <div class="mosques-results" id="mosque-results"></div>
+</div>
+
+<!-- MOSQUE DETAIL -->
+<div class="page" id="page-detail">
+  <div id="detail-content"></div>
+</div>
+
+<!-- SERVICES -->
+<div class="page" id="page-services">
+  <div style="padding:32px 32px 0">
+    <h1 style="font-size:32px;font-weight:800;margin-bottom:4px">Services</h1>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:20px">Community services across Tower Hamlets mosques</p>
+    <div class="search-wrap" style="margin-bottom:16px">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="service-search" placeholder="Search services..." oninput="filterServices()">
+    </div>
+    <div id="service-filters" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px"></div>
+  </div>
+  <div id="service-results" style="padding:16px 32px 48px"></div>
+</div>
+
+<!-- NOTIFS -->
+<!-- JUMMAH -->
+<div class="page" id="page-jummah">
+  <div style="padding:32px 32px 0">
+    <h1 style="font-size:32px;font-weight:800;margin-bottom:4px">Jummah Times</h1>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:20px">Friday prayer times across Tower Hamlets</p>
+    <div class="search-wrap" style="margin-bottom:16px">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="jummah-search" placeholder="Search mosque or area..." oninput="filterJummah()">
+    </div>
+    <div id="jummah-filters" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px"></div>
+  </div>
+  <div id="jummah-results" style="padding:16px 32px 48px"></div>
+</div>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mobile-nav-btn active" data-page="home" onclick="showPage('home')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
+    </button>
+    <button class="mobile-nav-btn" data-page="mosques" onclick="showPage('mosques')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Mosques
+    </button>
+    <button class="mobile-nav-btn" data-page="services" onclick="showPage('services')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>Services
+    </button>
+    <button class="mobile-nav-btn" data-page="jummah" onclick="showPage('jummah')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>Jummah
+    </button>
+  </div>
+</div>
+
+<script>
+var IMGS = [
+  'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400&q=60',
+  'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=400&q=60',
+  'https://images.unsplash.com/photo-1564769625905-50e93615e769?w=400&q=60',
+  'https://images.unsplash.com/photo-1509023464722-18d996393ca8?w=400&q=60',
+  'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=400&q=60',
+  'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=400&q=60'
+];
+
+var MOSQUES = [
+  {name:'Baitul Aman Mosque',address:'Bethnal Green, London',area:'Bethnal Green',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/baitulaman/'},
+  {name:'Baitul Mamur Masjid',address:'Bethnal Green, London',area:'Bethnal Green',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/baitulmamur/'},
+  {name:'Bishops Way Mosque',address:'Bethnal Green, London',area:'Bethnal Green',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/bishopsway/'},
+  {name:'Burhan Uddin Mosque',address:'Bethnal Green, London',area:'Bethnal Green',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/burhanuddinmasjid/'},
+  {name:'Dorset Masjid',address:'Bethnal Green, London',area:'Bethnal Green',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/dorsetmasjid/'},
+  {name:'Globe Town Mosque',address:'Bethnal Green, London',area:'Bethnal Green',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/globetownmasjid/',services:[{name:'Quran Classes',type:'Education',days:'Sat & Sun',time:'10:00 AM'},{name:'Youth Club',type:'Youth',days:'Fri',time:'6:00 PM'}]},
+  {name:'Shahporan Masjid',address:'Bethnal Green, London',area:'Bethnal Green',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/shahporanmasjid/'},
+  {name:'Bow Central Mosque',address:'Bow, London E3',area:'Bow',jummah:'1:30 PM',tags:['Sisters Section'],url:'https://www.towerhamletsmosques.co.uk/bowcentralmosque/',services:[{name:'Sisters Quran Circle',type:'Education',days:'Mon & Wed',time:'10:00 AM'},{name:'Islamic Studies',type:'Education',days:'Sat',time:'9:00 AM'},{name:'Food Bank',type:'Welfare',days:'Tue',time:'12:00 PM'}]},
+  {name:'Bow Common Masjid',address:'Bow Common, London E3',area:'Bow',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/bowcommonmasjid/'},
+  {name:'Bow Muslim Community Centre',address:'Bow, London E3',area:'Bow',jummah:'1:30 PM',tags:['Community Centre'],url:'https://www.towerhamletsmosques.co.uk/bmcc/',services:[{name:'Youth Club',type:'Youth',days:'Fri',time:'5:00 PM'},{name:'Elderly Welfare',type:'Welfare',days:'Thu',time:'2:00 PM'}]},
+  {name:'Bow West Organisation',address:'Bow, London E3',area:'Bow',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/bwo/'},
+  {name:'British Estate Masjid',address:'Bow, London E3',area:'Bow',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/britishestatemasjid/'},
+  {name:'Bromley By Bow Masjid',address:'Bromley by Bow, London E3',area:'Bow',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/bbbmasjid/'},
+  {name:'Coventry Cross Mosque',address:'Bow, London E3',area:'Bow',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/coventrycrossmasjid/'},
+  {name:'Dar al Arqam',address:'1 Kitcat Terrace, Bow, London E3 2SA',area:'Bow',jummah:'1:00 PM, 2:15 PM',tags:['Parking','Wudu Area'],url:'https://www.towerhamletsmosques.co.uk/daralarqam/',services:[{name:'Quran Hifz Programme',type:'Education',days:'Daily',time:'4:30 PM'},{name:'Arabic Classes',type:'Education',days:'Sat & Sun',time:'10:00 AM'},{name:'Youth Club',type:'Youth',days:'Fri',time:'6:00 PM'},{name:'Food Parcels',type:'Welfare',days:'Wed',time:'11:00 AM'}]},
+  {name:'Mimbar Academy',address:'Bow, London E3',area:'Bow',jummah:'1:30 PM',tags:['Academy'],url:'https://www.towerhamletsmosques.co.uk/mimbar/',services:[{name:'Islamic Studies',type:'Education',days:'Mon-Fri',time:'4:00 PM'},{name:'Quran Classes',type:'Education',days:'Sat & Sun',time:'9:00 AM'}]},
+  {name:'Al Aqsa Masjid',address:'Docklands, London E14',area:'Docklands',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/alaqsa/'},
+  {name:'Docklands Community Masjid',address:'Docklands, London E14',area:'Docklands',jummah:'1:30 PM',tags:['Community'],url:'https://www.towerhamletsmosques.co.uk/dco/',services:[{name:'Youth Club',type:'Youth',days:'Fri',time:'5:30 PM'},{name:'Community Meals',type:'Welfare',days:'Sun',time:'1:00 PM'}]},
+  {name:'Madina Jamme Masjid',address:'Docklands, London E14',area:'Docklands',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/madinamasjid/'},
+  {name:'Westferry Community Masjid',address:'Westferry, London E14',area:'Docklands',jummah:'1:30 PM',tags:['Community'],url:'https://www.towerhamletsmosques.co.uk/wco/'},
+  {name:'Baitul Islah Academy',address:'Limehouse, London E14',area:'Limehouse',jummah:'1:30 PM',tags:['Academy'],url:'https://www.towerhamletsmosques.co.uk/baitulislah/',services:[{name:'Quran Classes',type:'Education',days:'Mon-Fri',time:'4:30 PM'},{name:'Islamic Studies',type:'Education',days:'Sat',time:'9:00 AM'},{name:'Arabic Language',type:'Education',days:'Sun',time:'10:00 AM'}]},
+  {name:'Eastside Centre Masjid',address:'Limehouse, London E14',area:'Limehouse',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/eastside/'},
+  {name:'Limehouse Masjid',address:'Limehouse, London E14',area:'Limehouse',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/limehousemasjid/'},
+  {name:'Locksley Estate Mosque',address:'Limehouse, London E14',area:'Limehouse',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/locksleymasjid/'},
+  {name:'Turners Road Masjid',address:'Limehouse, London E14',area:'Limehouse',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/turnersmasjid/'},
+  {name:'Hamlets Way Masjid',address:'Mile End, London E3',area:'Mile End',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/hamletswaymasjid/'},
+  {name:'Mazahirul Uloom London',address:'Mile End, London E3',area:'Mile End',jummah:'1:30 PM',tags:['Islamic School'],url:'https://www.towerhamletsmosques.co.uk/mazahirululoom/',services:[{name:'Full-time Islamic School',type:'Education',days:'Mon-Fri',time:'8:30 AM'},{name:'Hifz Programme',type:'Education',days:'Mon-Fri',time:'4:00 PM'}]},
+  {name:'Aberfeldy Masjid',address:'Aberfeldy Street, Poplar, London E14',area:'Poplar',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/aberfeldymasjid/'},
+  {name:'Burdett Estate Mosque',address:'Poplar, London E14',area:'Poplar',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/bbcamasjid/'},
+  {name:'Hifzul Quran',address:'Poplar, London E14',area:'Poplar',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/hifzulquran/',services:[{name:'Hifz Programme',type:'Education',days:'Daily',time:'4:00 PM'},{name:'Quran Recitation',type:'Education',days:'Sat & Sun',time:'10:00 AM'}]},
+  {name:'Hindgrove Masjid',address:'Poplar, London E14',area:'Poplar',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/hindgrovemasjid/'},
+  {name:'Lansbury Estate Masjid',address:'Lansbury Estate, Poplar, London E14',area:'Poplar',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/lansburymasjid/'},
+  {name:'Leopold Masjid',address:'Poplar, London E14',area:'Poplar',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/leopold/'},
+  {name:'Poplar Central Mosque',address:'Poplar, London E14',area:'Poplar',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/poplarcentralmasjid/',services:[{name:'Youth Club',type:'Youth',days:'Fri',time:'5:00 PM'},{name:'Quran Classes',type:'Education',days:'Sat & Sun',time:'10:00 AM'},{name:'Counselling',type:'Welfare',days:'Thu',time:'2:00 PM'}]},
+  {name:'Poplar Mosque and Community Centre',address:'Poplar, London E14',area:'Poplar',jummah:'1:30 PM',tags:['Sisters Section','Community'],url:'https://www.towerhamletsmosques.co.uk/pmcc/',services:[{name:'Sisters Halaqah',type:'Education',days:'Mon',time:'10:00 AM'},{name:'Youth Club',type:'Youth',days:'Sat',time:'2:00 PM'},{name:'Food Bank',type:'Welfare',days:'Wed',time:'11:00 AM'}]},
+  {name:'Poplar Shahjalal Masjid',address:'Poplar, London E14',area:'Poplar',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/poplarshahjalal/'},
+  {name:'Teviot Masjid',address:'Teviot Estate, Poplar, London E14',area:'Poplar',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/teviotmasjid/'},
+  {name:'Al Barakah Institute',address:'Shadwell, London E1',area:'Shadwell',jummah:'1:30 PM',tags:['Institute'],url:'https://www.towerhamletsmosques.co.uk/albarakah/',services:[{name:'Islamic Studies',type:'Education',days:'Mon-Fri',time:'4:00 PM'},{name:'Arabic Classes',type:'Education',days:'Sat',time:'9:00 AM'}]},
+  {name:'Ashaadibi Masjid',address:'Shadwell, London E1',area:'Shadwell',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/ashaadibi/'},
+  {name:'Darul Ummah Jamme Masjid',address:'Shadwell, London E1',area:'Shadwell',jummah:'1:30 PM',tags:['Sisters Section'],url:'https://www.towerhamletsmosques.co.uk/darulummah/',services:[{name:'Sisters Classes',type:'Education',days:'Tue & Thu',time:'10:00 AM'},{name:'Nikah Services',type:'Community',days:'By appointment',time:''},{name:'Funeral Services',type:'Community',days:'As needed',time:''}]},
+  {name:'Shadwell Gardens Masjid',address:'Shadwell Gardens, London E1',area:'Shadwell',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/shadwellgardensmasjid/'},
+  {name:'Shadwell Jamme Masjid',address:'Shadwell, London E1',area:'Shadwell',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/shadwellmasjid/'},
+  {name:'BBC Masjid',address:'Shoreditch, London E2',area:'Shoreditch',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/bbcmasjid/'},
+  {name:'Brick Lane Jamme Masjid',address:'Brick Lane, London E1 6RF',area:'Shoreditch',jummah:'1:00 PM, 2:00 PM',tags:['Sisters Section','Historic'],url:'https://www.towerhamletsmosques.co.uk/bricklanemasjid/',services:[{name:'Quran Classes',type:'Education',days:'Sat & Sun',time:'9:00 AM'},{name:'Youth Club',type:'Youth',days:'Fri',time:'5:30 PM'},{name:'Food Bank',type:'Welfare',days:'Mon',time:'12:00 PM'}]},
+  {name:'Shoreditch Masjid',address:'Shoreditch, London E2',area:'Shoreditch',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/shoreditchmasjid/'},
+  {name:'Al Huda Mosque',address:'Stepney, London E1',area:'Stepney',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/alhudamosque/'},
+  {name:'Darul Khidmah',address:'Stepney, London E1',area:'Stepney',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/darulkhidmah/',services:[{name:'Quran Classes',type:'Education',days:'Mon-Fri',time:'4:30 PM'},{name:'Welfare Support',type:'Welfare',days:'Wed',time:'10:00 AM'}]},
+  {name:'Redcoat Masjid',address:'Stepney, London E1',area:'Stepney',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/redcoatmasjid/'},
+  {name:'Stepney Shahjalal Mosque',address:'Stepney, London E1',area:'Stepney',jummah:'1:30 PM',tags:['Community Centre'],url:'https://www.towerhamletsmosques.co.uk/ssmacc/',services:[{name:'Youth Club',type:'Youth',days:'Fri & Sat',time:'5:00 PM'},{name:'Quran Classes',type:'Education',days:'Daily',time:'4:30 PM'},{name:'Counselling',type:'Welfare',days:'Tue',time:'2:00 PM'},{name:'Nikah Services',type:'Community',days:'By appointment',time:''}]},
+  {name:'Wapping Masjid',address:'Wapping, London E1W',area:'Wapping',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/wappingmasjid/'},
+  {name:'Collingwood Masjid',address:'Whitechapel, London E1',area:'Whitechapel',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/collingwoodmasjid/'},
+  {name:'East London Mosque',address:'82-92 Whitechapel Road, London E1 1JQ',area:'Whitechapel',jummah:'1:00 PM, 1:45 PM, 2:30 PM',tags:['Sisters Section','Disabled Access','Parking'],url:'https://www.towerhamletsmosques.co.uk/elm/',services:[{name:'Quran Classes',type:'Education',days:'Daily',time:'4:30 PM'},{name:'Youth Club',type:'Youth',days:'Fri',time:'5:00 PM'},{name:'Sisters Circle',type:'Education',days:'Mon & Wed',time:'10:00 AM'},{name:'Food Bank',type:'Welfare',days:'Sat',time:'10:00 AM'},{name:'Funeral Services',type:'Community',days:'Daily',time:''},{name:'Nikah Services',type:'Community',days:'By appointment',time:''},{name:'Arabic Classes',type:'Education',days:'Sat & Sun',time:'9:00 AM'}]},
+  {name:'Esha Atul Islam Mosque',address:'Whitechapel, London E1',area:'Whitechapel',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/eshaatulislam/'},
+  {name:'Jazari Community Centre',address:'Whitechapel, London E1',area:'Whitechapel',jummah:'1:30 PM',tags:['Community Centre'],url:'https://www.towerhamletsmosques.co.uk/jazari/',services:[{name:'Community Meals',type:'Welfare',days:'Sun',time:'1:00 PM'},{name:'Youth Programme',type:'Youth',days:'Sat',time:'2:00 PM'}]},
+  {name:'Markazi Masjid',address:'Christian Street, London E1 1RS',area:'Whitechapel',jummah:'1:15 PM',tags:['Sisters Section'],url:'https://www.towerhamletsmosques.co.uk/markazimasjid/',services:[{name:'Quran Classes',type:'Education',days:'Sat & Sun',time:'9:00 AM'},{name:'Sisters Halaqah',type:'Education',days:'Wed',time:'10:00 AM'}]},
+  {name:'Weavers Fields Masjid',address:'Whitechapel, London E2',area:'Whitechapel',jummah:'1:30 PM',url:'https://www.towerhamletsmosques.co.uk/weaversmasjid/'},
+  // Newham - Forest Gate
+  {name:'Forest Gate Central Mosque',address:'449-451 Romford Road, Forest Gate, London E7',area:'Forest Gate',jummah:'1:15 PM, 2:00 PM',tags:['Sisters Section'],url:'https://www.newhammosques.com/forest-gate-central'},
+  {name:'Green Street Masjid',address:'88 Green Street, Forest Gate, London E7',area:'Forest Gate',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Upton Lane Mosque',address:'62-66 Upton Lane, Forest Gate, London E7',area:'Forest Gate',jummah:'1:00 PM, 1:45 PM',tags:['Sisters Section','Disabled Access'],url:'https://www.newhammosques.com/'},
+  {name:'Minhaj ul Quran',address:'292-296 Romford Road, Forest Gate, London E7',area:'Forest Gate',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Jamia Darus Sunnah',address:'Forest Gate, London E7',area:'Forest Gate',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Khatme Nubuwat',address:'Forest Gate, London E7',area:'Forest Gate',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'International Khatme Nubuwat',address:'Forest Gate, London E7',area:'Forest Gate',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Madaniyah Foundation',address:'Forest Gate, London E7',area:'Forest Gate',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Masjid e Quba',address:'Forest Gate, London E7',area:'Forest Gate',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  // Newham - East Ham
+  {name:'Plashet Grove Mosque',address:'177-179 Plashet Grove, East Ham, London E6',area:'East Ham',jummah:'1:15 PM, 2:00 PM',tags:['Disabled Access'],url:'https://www.newhammosques.com/'},
+  {name:'Masjid Al Humera',address:'East Ham, London E6',area:'East Ham',jummah:'1:30 PM',tags:['Disabled Access'],url:'https://www.newhammosques.com/'},
+  {name:'Masjid Isa Ibn Maryam',address:'East Ham, London E6',area:'East Ham',jummah:'1:30 PM',tags:['Sisters Section'],url:'https://www.newhammosques.com/'},
+  {name:'Al Karam Mosque',address:'East Ham, London E6',area:'East Ham',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Azhar Masjid',address:'East Ham, London E6',area:'East Ham',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Masjid Bilal and Islamic Centre',address:'295 Barking Road, East Ham, London E6',area:'East Ham',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Madina Masjid',address:'225 High Street North, East Ham, London E6',area:'East Ham',jummah:'1:15 PM, 2:00 PM',url:'https://www.newhammosques.com/'},
+  {name:'Asha Islamic Centre',address:'East Ham, London E6',area:'East Ham',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Baitur Rahman',address:'East Ham, London E6',area:'East Ham',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Darus Salaam',address:'East Ham, London E6',area:'East Ham',jummah:'1:30 PM',tags:['Sisters Section'],url:'https://www.newhammosques.com/'},
+  {name:'Islamic Dawah Centre (IDC) Saifi Foundation',address:'398 High Street North, East Ham, London E12',area:'East Ham',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Shah Jalal Mosque',address:'722-724 Romford Road, Manor Park, London E12',area:'East Ham',jummah:'1:15 PM, 2:00 PM',url:'https://www.newhammosques.com/'},
+  {name:'Anjuman-e-Islamia Mosque',address:'266-268 High Street North, Manor Park, London E12',area:'East Ham',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  // Newham - Plaistow / Upton Park
+  {name:'Masjid Ibrahim',address:'721-723 Barking Road, Plaistow, London E13',area:'Plaistow',jummah:'1:15 PM, 2:00 PM',tags:['Sisters Section','Disabled Access'],url:'https://www.newhammosques.com/'},
+  {name:'Masjid Yousaf',address:'Plaistow, London E13',area:'Plaistow',jummah:'1:30 PM',tags:['Sisters Section'],url:'https://www.newhammosques.com/'},
+  {name:'Plaistow Jamia Islamia',address:'Plaistow, London E13',area:'Plaistow',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Plashet Road Mosque',address:'Plashet Road, Upton Park, London E13',area:'Plaistow',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Selwyn Mosque',address:'Plaistow, London E13',area:'Plaistow',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Umm al Qura Community Centre',address:'Plaistow, London E13',area:'Plaistow',jummah:'1:30 PM',tags:['Sisters Section'],url:'https://www.newhammosques.com/'},
+  {name:'Church Road Mosque',address:'Church Road, Plaistow, London E13',area:'Plaistow',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'MIA Centre and Masjid',address:'Plaistow, London E13',area:'Plaistow',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  // Newham - Stratford / West Ham
+  {name:'Hefazothe Islam Centre',address:'Stratford, London E15',area:'Stratford',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Iqra Academy',address:'Stratford, London E15',area:'Stratford',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Masjid Al Falah',address:'Stratford, London E15',area:'Stratford',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Royal Docks Welfare Assc. Darul Jannah',address:'243 Plaistow Road, London E15',area:'Stratford',jummah:'1:30 PM',url:'https://www.newhammosques.com/royal-docks'},
+  {name:'Mohi Ud Deen Jamia',address:'Stratford, London E15',area:'Stratford',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  {name:'Al Hira Masjid',address:'Stratford, London E15',area:'Stratford',jummah:'1:30 PM',tags:['Sisters Section','Disabled Access'],url:'https://www.newhammosques.com/'},
+  {name:'Newham Hospital Prayer Room',address:'Glen Road, Plaistow, London E13',area:'Plaistow',jummah:'1:30 PM',tags:['Sisters Section'],url:'https://www.newhammosques.com/'},
+  {name:'Zakariya Primary School',address:'Stratford, London E15',area:'Stratford',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  // Newham - Canning Town / Royal Docks
+  {name:'Al Karam Masjid',address:'Canning Town, London E16',area:'Canning Town',jummah:'1:30 PM',url:'https://www.newhammosques.com/'},
+  // Redbridge - Ilford
+  {name:'Redbridge Islamic Centre',address:'179 Eastern Avenue, Ilford, IG4 5AW',area:'Ilford',jummah:'1:00 PM, 2:00 PM, 3:00 PM',tags:['Sisters Section','Parking'],url:'https://redbridgemosques.com/'},
+  {name:'Gants Hill Masjid',address:'28-28A Woodford Avenue, Gants Hill, Ilford, IG2 6XG',area:'Ilford',jummah:'1:15 PM, 2:15 PM',tags:['Sisters Section'],url:'https://redbridgemosques.com/'},
+  {name:'Ilford Islamic Centre (Albert Road Mosque)',address:'Albert Road, Ilford, IG1',area:'Ilford',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  {name:'Ilford Muslim Society (Masjid-e-Dawatul Islam)',address:'Ilford, IG1',area:'Ilford',jummah:'1:15 PM, 2:00 PM',url:'https://redbridgemosques.com/'},
+  {name:'Ilford Muslim Community Centre',address:'Eton Road, Ilford, IG1 2UE',area:'Ilford',jummah:'1:30 PM',tags:['Community Centre'],url:'https://redbridgemosques.com/'},
+  {name:'At-Taqwa Academy',address:'104-106 Ley Street, Ilford, IG1 4BX',area:'Ilford',jummah:'1:30 PM',tags:['Academy'],url:'https://redbridgemosques.com/'},
+  {name:'Loxford Muslim Society',address:'Ilford, IG1',area:'Ilford',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  {name:'Darul Ummah Redbridge',address:'Ilford, IG1',area:'Ilford',jummah:'1:15 PM, 2:00 PM',url:'https://redbridgemosques.com/'},
+  {name:'Masjid Taha',address:'Ilford, IG1',area:'Ilford',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  {name:'Masjid Al Falah Redbridge',address:'Ilford, IG1',area:'Ilford',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  {name:'Islamic Centre of Essex',address:'878-880 Eastern Avenue, Ilford, IG2 7HY',area:'Ilford',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  {name:'Redbridge Muslim Community Centre',address:'Ilford, IG2',area:'Ilford',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  {name:'IRDSA Hall',address:'Craven Gardens, Barkingside, Ilford, IG6 1PS',area:'Ilford',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  // Redbridge - Seven Kings / Goodmayes
+  {name:'Seven Kings Muslim Educational Trust',address:'Seven Kings, Ilford, IG3',area:'Seven Kings',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  {name:'Seven Kings Masjid',address:'Seven Kings, Ilford, IG3',area:'Seven Kings',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  {name:'Goodmayes Masjid',address:'Goodmayes, Ilford, IG3',area:'Seven Kings',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  // Redbridge - Newbury Park / Wanstead
+  {name:'Newbury Park Mosque',address:'Newbury Park, Ilford, IG2',area:'Newbury Park',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  {name:'South Woodford Islamic Centre',address:'10-12 Mulberry Way, South Woodford, London E18 1ED',area:'Newbury Park',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  {name:'South Woodford Muslim Community Centre',address:'12-14 Mulberry Way, South Woodford, London E18 1ED',area:'Newbury Park',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  // Redbridge - Woodford
+  {name:'Woodford Muslim Cultural Centre',address:'114 Snakes Lane East, Woodford Green, IG8 7HY',area:'Woodford',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  // Redbridge - Chadwell Heath / Barkingside
+  {name:'Al Huda Chadwell Heath',address:'Chadwell Heath, Romford, RM6',area:'Chadwell Heath',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  {name:'Chadwell Heath Central Masjid',address:'Chadwell Heath, Romford, RM6',area:'Chadwell Heath',jummah:'1:30 PM',url:'https://redbridgemosques.com/'},
+  {name:'Barkingside Community Trust',address:'Barkingside, Ilford, IG6',area:'Chadwell Heath',jummah:'1:30 PM',url:'https://redbridgemosques.com/'}
+
+];
+
+var SVC_COLORS = {
+  'Education': {bg:'rgba(99,102,241,0.15)',color:'#818cf8'},
+  'Youth':     {bg:'rgba(16,185,129,0.15)',color:'#34d399'},
+  'Welfare':   {bg:'rgba(240,165,0,0.15)', color:'#f0a500'},
+  'Community': {bg:'rgba(236,72,153,0.15)',color:'#f472b6'}
+};
+
+function svcColor(type) {
+  return SVC_COLORS[type] || {bg:'rgba(255,255,255,0.08)',color:'var(--muted)'};
+}
+
+function svcIcon(type) {
+  if (type === 'Education') return '<path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>';
+  if (type === 'Youth')     return '<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>';
+  if (type === 'Welfare')   return '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>';
+  return '<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>';
+}
+
+var activeServiceType = 'All';
+var activeArea = 'All';
+var currentView = 'grid';
+
+function initServiceFilters() {
+  var types = ['All','Education','Youth','Welfare','Community'];
+  var el = document.getElementById('service-filters');
+  if (!el) return;
+  el.innerHTML = types.map(function(t) {
+    return '<button class="area-btn' + (t === 'All' ? ' active' : '') + '" onclick="setServiceType(\'' + t + '\')">' + t + '</button>';
+  }).join('');
+}
+
+function setServiceType(type) {
+  activeServiceType = type;
+  document.querySelectorAll('#service-filters .area-btn').forEach(function(b){ b.classList.toggle('active', b.textContent === type); });
+  filterServices();
+}
+
+function filterServices() {
+  var input = document.getElementById('service-search');
+  var q = input ? input.value.toLowerCase() : '';
+  var results = [];
+  MOSQUES.forEach(function(m, mi) {
+    if (!m.services) return;
+    m.services.forEach(function(s, si) {
+      if ((activeServiceType === 'All' || s.type === activeServiceType) &&
+          (s.name.toLowerCase().indexOf(q) > -1 || m.name.toLowerCase().indexOf(q) > -1)) {
+        results.push({service: s, mosque: m, mosqueIdx: mi});
+      }
+    });
+  });
+  renderServices(results);
+}
+
+function renderServices(results) {
+  var el = document.getElementById('service-results');
+  if (!el) return;
+  if (!results.length) { el.innerHTML = '<div class="loading-state">No services found</div>'; return; }
+  el.innerHTML = results.map(function(r) {
+    var s = r.service, m = r.mosque, c = svcColor(s.type);
+    return '<div class="service-card" onclick="openDetail(' + r.mosqueIdx + ')">' +
+      '<div class="service-icon" style="background:' + c.bg + '">' +
+        '<svg viewBox="0 0 24 24" fill="' + c.color + '">' + svcIcon(s.type) + '</svg>' +
+      '</div>' +
+      '<div class="service-body">' +
+        '<div class="service-name">' + s.name + '</div>' +
+        '<div class="service-mosque">' + m.name + ' &bull; ' + m.area + '</div>' +
+        '<div class="service-meta">' +
+          '<span class="service-type-badge" style="background:' + c.bg + ';color:' + c.color + '">' + s.type + '</span>' +
+          (s.days ? '<span style="font-size:11px;color:var(--muted);padding:2px 0">' + s.days + (s.time ? ' &bull; ' + s.time : '') + '</span>' : '') +
+        '</div>' +
+      '</div>' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:var(--muted);flex-shrink:0"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>' +
+    '</div>';
+  }).join('');
+}
+
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('[data-page]').forEach(function(b){ b.classList.toggle('active', b.dataset.page === id); });
+  if (id === 'mosques') { filterMosques(); }
+  if (id === 'services') { filterServices(); }
+  if (id === 'jummah') { filterJummah(); }
+}
+
+var activeJummahArea = 'All';
+
+function initJummahFilters() {
+  var areas = ['All'];
+  var seen = {};
+  MOSQUES.forEach(function(m){ if (!seen[m.area]) { seen[m.area] = true; areas.push(m.area); } });
+  var el = document.getElementById('jummah-filters');
+  if (!el) return;
+  el.innerHTML = areas.map(function(a) {
+    return '<button class="area-btn' + (a === 'All' ? ' active' : '') + '" onclick="setJummahArea(\'' + a + '\')">' + a + '</button>';
+  }).join('');
+}
+
+function setJummahArea(area) {
+  activeJummahArea = area;
+  document.querySelectorAll('#jummah-filters .area-btn').forEach(function(b){ b.classList.toggle('active', b.textContent === area); });
+  filterJummah();
+}
+
+function filterJummah() {
+  var input = document.getElementById('jummah-search');
+  var q = input ? input.value.toLowerCase() : '';
+  var filtered = MOSQUES.filter(function(m) {
+    return (activeJummahArea === 'All' || m.area === activeJummahArea) &&
+      (m.name.toLowerCase().indexOf(q) > -1 || m.area.toLowerCase().indexOf(q) > -1 || m.jummah.indexOf(q) > -1);
+  });
+  renderJummah(filtered);
+}
+
+function renderJummah(mosques) {
+  var el = document.getElementById('jummah-results');
+  if (!el) return;
+  if (!mosques.length) { el.innerHTML = '<div class="loading-state">No results found</div>'; return; }
+
+  // Group by jummah time
+  var groups = {};
+  var order = [];
+  mosques.forEach(function(m, i) {
+    var times = m.jummah.split(',');
+    times.forEach(function(t) {
+      var key = t.trim();
+      if (!groups[key]) { groups[key] = []; order.push(key); }
+      groups[key].push({mosque: m, idx: MOSQUES.indexOf(m)});
+    });
+  });
+
+  // Sort time keys chronologically
+  order = order.filter(function(v, i, a){ return a.indexOf(v) === i; });
+  order.sort(function(a, b) {
+    function toMins(t) {
+      var m = t.match(/(\d+):(\d+)\s*(AM|PM)/i);
+      if (!m) return 0;
+      var h = parseInt(m[1]), mn = parseInt(m[2]), pm = m[3].toUpperCase() === 'PM';
+      if (pm && h !== 12) h += 12;
+      if (!pm && h === 12) h = 0;
+      return h * 60 + mn;
+    }
+    return toMins(a) - toMins(b);
+  });
+
+  el.innerHTML = order.map(function(time) {
+    var entries = groups[time];
+    var rows = entries.map(function(e) {
+      return '<div class="mosque-card" onclick="openDetail(' + e.idx + ')" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;margin-bottom:6px">' +
+        '<div style="width:36px;height:36px;border-radius:10px;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="#f0a500"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>' +
+        '</div>' +
+        '<div style="flex:1;min-width:0">' +
+          '<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + e.mosque.name + '</div>' +
+          '<div style="font-size:12px;color:var(--muted)">' + e.mosque.address + '</div>' +
+        '</div>' +
+        '<span class="area-badge">' + e.mosque.area + '</span>' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--muted);flex-shrink:0"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>' +
+      '</div>';
+    }).join('');
+
+    return '<div style="margin-bottom:20px">' +
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">' +
+        '<span style="font-size:18px;font-weight:700;color:var(--gold)">' + time + '</span>' +
+        '<span style="font-size:12px;color:var(--muted)">' + entries.length + ' mosque' + (entries.length !== 1 ? 's' : '') + '</span>' +
+        '<div style="flex:1;height:1px;background:var(--border)"></div>' +
+      '</div>' +
+      rows +
+    '</div>';
+  }).join('');
+}
+
+
+var CITY_AREAS = {
+  'Tower Hamlets': ['Bethnal Green','Bow','Docklands','Limehouse','Mile End','Poplar','Shadwell','Shoreditch','Stepney','Wapping','Whitechapel'],
+  'Newham': ['Forest Gate','East Ham','Plaistow','Stratford','Canning Town'],
+  'Redbridge': ['Ilford','Seven Kings','Newbury Park','Woodford','Chadwell Heath']
+};
+
+function initAreaFilters() {
+  updateAreaDropdown();
+}
+
+function updateAreaDropdown() {
+  var cityEl = document.getElementById('city-select');
+  var areaEl = document.getElementById('area-select');
+  if (!cityEl || !areaEl) return;
+  var city = cityEl.value;
+  var prevArea = areaEl.value;
+  var areas = city && CITY_AREAS[city] ? CITY_AREAS[city] : Object.values(CITY_AREAS).reduce(function(a,b){return a.concat(b);}, []);
+  areaEl.innerHTML = '<option value="">All Areas</option>' +
+    areas.map(function(a){ return '<option value="' + a + '">' + a + '</option>'; }).join('');
+  if (prevArea) areaEl.value = prevArea;
+}
+
+function filterMosques() {
+  updateAreaDropdown();
+  var input = document.getElementById('mosque-search');
+  var q = input ? input.value.toLowerCase() : '';
+  var city = document.getElementById('city-select') ? document.getElementById('city-select').value : '';
+  var area = document.getElementById('area-select') ? document.getElementById('area-select').value : '';
+  var filtered = MOSQUES.filter(function(m) {
+    var cityAreas = city && CITY_AREAS[city] ? CITY_AREAS[city] : null;
+    var cityMatch = !cityAreas || cityAreas.indexOf(m.area) > -1;
+    var areaMatch = !area || m.area === area;
+    var textMatch = !q || m.name.toLowerCase().indexOf(q) > -1 || (m.address||'').toLowerCase().indexOf(q) > -1;
+    return cityMatch && areaMatch && textMatch;
+  });
+  renderList(filtered);
+}
+
+
+var PRAYER_TIMES = [
+  {name:'Fajr',   jamaah:'05:48'},
+  {name:'Zuhr',   jamaah:'12:45'},
+  {name:'Asr',    jamaah:'15:00'},
+  {name:'Maghrib',jamaah:'19:39'},
+  {name:'Isha',   jamaah:'21:30'}
+];
+
+function getNextJamaah() {
+  var now = new Date();
+  var nowMins = now.getHours() * 60 + now.getMinutes();
+  for (var i = 0; i < PRAYER_TIMES.length; i++) {
+    var parts = PRAYER_TIMES[i].jamaah.split(':');
+    var pMins = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    if (nowMins < pMins) {
+      var h = parseInt(parts[0]);
+      var m = parts[1];
+      var ampm = h >= 12 ? 'PM' : 'AM';
+      var h12 = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+      return {name: PRAYER_TIMES[i].name, time: h12 + ':' + m + ' ' + ampm};
+    }
+  }
+  return {name: 'Fajr', time: '5:48 AM'};
+}
+
+function cardHTML(m, i) {
+  var hasSvc = m.services && m.services.length;
+  var next = getNextJamaah();
+  return '<div class="mosque-card" onclick="openDetail(' + i + ')" style="cursor:pointer;display:flex;align-items:center;gap:14px;padding:14px 16px;position:relative">' +
+    '<span class="area-badge" style="position:absolute;top:10px;right:12px">' + m.area + '</span>' +
+    '<div style="width:42px;height:42px;border-radius:12px;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="#f0a500"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>' +
+    '</div>' +
+    '<div style="flex:1;min-width:0;padding-right:60px">' +
+      '<div style="font-size:14px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + m.name + '</div>' +
+      '<div style="font-size:12px;color:var(--muted);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + m.address + '</div>' +
+      '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
+        '<span style="font-size:11px;color:var(--gold)">' + next.name + ' ' + next.time + '</span>' +
+        '<span style="font-size:11px;color:var(--muted)">Jummah ' + m.jummah + '</span>' +
+        (hasSvc ? '<span style="font-size:11px;color:var(--muted)">&bull; ' + m.services.length + ' service' + (m.services.length !== 1 ? 's' : '') + '</span>' : '') +
+      '</div>' +
+    '</div>' +
+    '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--muted);flex-shrink:0"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>' +
+  '</div>';
+}
+
+function listCardHTML(m, i) {
+  var img = IMGS[i % IMGS.length];
+  var tags = (m.tags || []).slice(0, 3).map(function(t){ return '<span class="tag">' + t + '</span>'; }).join('');
+  return '<div class="mosque-list-card" onclick="openDetail(' + i + ')" style="cursor:pointer">' +
+    '<div class="mosque-list-img"><img src="' + img + '" alt="' + m.name + '" loading="lazy" onerror="this.style.display=\'none\'"></div>' +
+    '<div class="mosque-list-body">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">' +
+        '<div class="mosque-list-name" style="margin:0;flex:1">' + m.name + '</div>' +
+        '<span class="area-badge">' + m.area + '</span>' +
+      '</div>' +
+      '<div class="mosque-card-row"><svg viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px;color:var(--gold)"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>' + m.address + '</div>' +
+      '<div class="mosque-card-row" style="margin-top:3px"><svg viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px;color:var(--gold)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 15h-1v-5h1v5zm0-8h-1V7h1v2z"/></svg>Jummah: ' + m.jummah + '</div>' +
+      (tags ? '<div class="mosque-tags" style="margin-top:8px">' + tags + '</div>' : '') +
+    '</div>' +
+  '</div>';
+}
+
+function renderList(mosques) {
+  var el = document.getElementById('mosque-results');
+  var countEl = document.getElementById('mosque-count');
+  if (countEl) countEl.textContent = mosques.length + ' mosque' + (mosques.length !== 1 ? 's' : '') + ' found';
+  if (!el) return;
+  if (!mosques.length) { el.innerHTML = '<div class="loading-state">No mosques found</div>'; return; }
+  if (currentView === 'grid') {
+    el.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px">' +
+      mosques.map(function(m,i){ return cardHTML(m,i); }).join('') + '</div>';
+  } else {
+    el.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px">' +
+      mosques.map(function(m,i){ return listCardHTML(m,i); }).join('') + '</div>';
+  }
+}
+
+function renderHomeGrid() {
+  var el = document.getElementById('home-grid');
+  if (!el) return;
+  el.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px">' +
+    MOSQUES.slice(0, 5).map(function(m,i){ return cardHTML(m,i); }).join('') + '</div>';
+}
+
+function locateMe() {
+  if (!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    var lat = pos.coords.latitude, lng = pos.coords.longitude;
+    var countEl = document.getElementById('mosque-count');
+    var resEl = document.getElementById('mosque-results');
+    if (countEl) countEl.textContent = 'Searching near you...';
+    if (resEl) resEl.innerHTML = '<div class="loading-state">Finding nearby mosques...</div>';
+    fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        tools: [{type: 'web_search_20250305', name: 'web_search'}],
+        messages: [{role: 'user', content: 'Find mosques near ' + lat + ',' + lng + '. Return ONLY a JSON array no markdown: [{"name":"...","address":"...","jummah":"1:30 PM","area":"area name","url":"https://maps.google.com/?q=name+address"}]'}]
+      })
+    }).then(function(r){ return r.json(); }).then(function(data) {
+      var text = data.content.filter(function(b){ return b.type === 'text'; }).map(function(b){ return b.text; }).join('');
+      var match = text.match(/\[[\s\S]*\]/);
+      if (match) {
+        try {
+          var found = JSON.parse(match[0]);
+          renderList(found);
+          if (countEl) countEl.textContent = found.length + ' mosques found near you';
+        } catch(e) { renderList(MOSQUES); }
+      } else { renderList(MOSQUES); }
+    }).catch(function(){ renderList(MOSQUES); });
+  }, function(){ alert('Could not get location'); });
+}
+
+function openDetail(idx) {
+  var m = MOSQUES[idx] || null;
+  if (!m) return;
+  var img = IMGS[idx % IMGS.length];
+  var prayers = [
+    {name:'Fajr',   begins:'5:18', jamaah:'5:48', tomorrow:'5:49', next: true},
+    {name:'Zuhr',   begins:'11:49',jamaah:'12:45',tomorrow:'12:45',next: false},
+    {name:'Asr',    begins:'2:41', jamaah:'3:00', tomorrow:'3:00', next: false},
+    {name:'Maghrib',begins:'4:32', jamaah:'4:39', tomorrow:'4:37', next: false},
+    {name:'Isha',   begins:'6:01', jamaah:'7:30', tomorrow:'7:30', next: false}
+  ];
+  var services = m.services || [];
+  var svcSection = services.length ? (
+    '<div class="detail-card">' +
+      '<h3>Services</h3>' +
+      '<div class="svc-detail-list">' +
+        services.map(function(s) {
+          var c = svcColor(s.type);
+          return '<div class="svc-item">' +
+            '<div class="svc-icon-sm" style="background:' + c.bg + '">' +
+              '<svg viewBox="0 0 24 24" fill="' + c.color + '">' + svcIcon(s.type) + '</svg>' +
+            '</div>' +
+            '<div style="flex:1">' +
+              '<div style="font-size:14px;font-weight:600">' + s.name + '</div>' +
+              (s.days ? '<div style="font-size:12px;color:var(--muted);margin-top:2px">' + s.days + (s.time ? ' &bull; ' + s.time : '') + '</div>' : '') +
+            '</div>' +
+            '<span class="service-type-badge" style="background:' + c.bg + ';color:' + c.color + '">' + s.type + '</span>' +
+          '</div>';
+        }).join('') +
+      '</div>' +
+    '</div>'
+  ) : '';
+
+  var ptRows = prayers.map(function(p) {
+    return '<div class="pt-row">' +
+      '<span class="pname">' + p.name + '</span>' +
+      '<span class="begins">' + p.begins + '</span>' +
+      '<span class="jamaah">' + p.jamaah + '</span>' +
+      '<span class="tomorrow">' + p.tomorrow + (p.next ? '<span class="next-bar"></span>' : '') + '</span>' +
+    '</div>';
+  }).join('');
+  var facilities = (m.tags && m.tags.length) ? m.tags : ['Prayer Hall', 'Wudu Facilities'];
+  var facItems = facilities.map(function(f) {
+    return '<div class="facility-item">' +
+      '<div class="fac-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>' +
+      f +
+    '</div>';
+  }).join('');
+  var html =
+    '<div style="background:var(--card2);padding:20px 20px 0;position:relative">' +
+      '<button style="background:rgba(255,255,255,0.07);border:none;color:var(--text);width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-bottom:16px" onclick="showPage(\'mosques\')">' +
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>' +
+      '</button>' +
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:20px">' +
+        '<div>' +
+          '<div style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:0.5px;margin-bottom:6px">' + (m.area || '') + '</div>' +
+          '<h2 style="font-size:22px;font-weight:700;margin-bottom:4px">' + m.name + '</h2>' +
+          '<p style="font-size:13px;color:var(--muted)">' + m.address + '</p>' +
+        '</div>' +
+        '<div style="width:48px;height:48px;border-radius:12px;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+          '<svg width="22" height="22" viewBox="0 0 24 24" fill="#f0a500"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="detail-body">' +
+      '<div class="pt-section">' +
+        '<h3>Prayer Times</h3>' +
+        '<div id="salah-countdown-' + idx + '" style="background:rgba(0,0,0,0.3);border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">' +
+          '<div>' +
+            '<div style="font-size:10px;font-weight:600;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px">NEXT SALAH</div>' +
+            '<div style="display:flex;align-items:baseline;gap:8px">' +
+              '<span id="cd-name-' + idx + '" style="font-size:26px;font-weight:700"></span>' +
+              '<span id="cd-time-' + idx + '" style="font-size:13px;color:var(--muted)"></span>' +
+            '</div>' +
+          '</div>' +
+          '<div style="text-align:right">' +
+            '<div style="font-size:10px;font-weight:600;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px">STARTS IN</div>' +
+            '<span id="cd-countdown-' + idx + '" style="font-size:26px;font-weight:700;color:#818cf8;font-variant-numeric:tabular-nums"></span>' +
+          '</div>' +
+        '</div>' +
+        '<div id="cd-bar-wrap-' + idx + '" style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;margin-bottom:16px;margin-top:-10px">' +
+          '<div id="cd-bar-' + idx + '" style="height:3px;background:#818cf8;border-radius:2px;width:0%;transition:width 1s linear"></div>' +
+        '</div>' +
+        '<div class="pt-header-row"><span></span><span>Begins</span><span>Jama\'ah</span><span>Tomorrow</span></div>' +
+        ptRows +
+        '<div class="jummah-section">' +
+          '<h4>Jummah</h4>' +
+          '<div class="jummah-times">' +
+            m.jummah.split(',').map(function(t){ return '<span class="jummah-pill">' + t.trim() + '</span>'; }).join('') +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="detail-card">' +
+        '<h3>About</h3>' +
+        '<p style="font-size:14px;color:var(--muted);line-height:1.7">' + m.name + ' serves the local Muslim community in ' + m.area + ', Tower Hamlets. It provides daily prayer facilities and community services for residents in the area.</p>' +
+      '</div>' +
+      svcSection +
+      '<div class="detail-card">' +
+        '<h3>Facilities</h3>' +
+        facItems +
+      '</div>' +
+      '<div class="detail-card">' +
+        '<h3>Contact</h3>' +
+        '<div class="contact-item"><div class="con-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div><span>Contact via Tower Hamlets Mosques</span></div>' +
+        '<div class="contact-item"><div class="con-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95a15.65 15.65 0 00-1.38-3.56A8.03 8.03 0 0118.92 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96z"/></svg></div><a href="' + m.url + '" target="_blank" style="color:var(--muted);font-size:14px">towerhamletsmosques.co.uk</a></div>' +
+        '<button class="directions-btn" onclick="window.open(\'https://maps.google.com/?q=' + encodeURIComponent(m.name + ' ' + m.address) + '\',\'_blank\')">' +
+          '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>' +
+          'Get Directions' +
+        '</button>' +
+      '</div>' +
+    '</div>';
+  document.getElementById('detail-content').innerHTML = html;
+  showPage('detail');
+
+  // Start countdown
+  var cdPrayers = [
+    {name:'Fajr',   time:'05:48'},
+    {name:'Zuhr',   time:'12:45'},
+    {name:'Asr',    time:'15:00'},
+    {name:'Maghrib',time:'19:39'},
+    {name:'Isha',   time:'21:30'}
+  ];
+  function toMins(t) { var p=t.split(':'); return parseInt(p[0])*60+parseInt(p[1]); }
+  function fmt12(t) { var p=t.split(':'),h=parseInt(p[0]),m=p[1],ap=h>=12?'PM':'AM'; return (h>12?h-12:(h===0?12:h))+':'+m+' '+ap; }
+  function padZ(n) { return n<10?'0'+n:n; }
+  var cdTimer = null;
+  function updateCd() {
+    var now = new Date();
+    var nowM = now.getHours()*60+now.getMinutes();
+    var next = cdPrayers[0];
+    var prevM = 0;
+    for (var i=0;i<cdPrayers.length;i++) {
+      var pm = toMins(cdPrayers[i].time);
+      if (nowM < pm) { next = cdPrayers[i]; prevM = i>0?toMins(cdPrayers[i-1].time):0; break; }
+      if (i===cdPrayers.length-1) { next = cdPrayers[0]; prevM = pm; }
+    }
+    var nextM = toMins(next.time);
+    var diffSecs;
+    if (nowM < nextM) { diffSecs = (nextM - nowM)*60 - now.getSeconds(); }
+    else { diffSecs = (24*60 - nowM + nextM)*60 - now.getSeconds(); }
+    var totalSecs = (nextM - prevM)*60; if(totalSecs<0) totalSecs+=24*60*60;
+    var pct = totalSecs>0 ? Math.max(0,Math.min(100,(1-diffSecs/totalSecs)*100)) : 0;
+    var h=Math.floor(diffSecs/3600), mn=Math.floor((diffSecs%3600)/60), s=diffSecs%60;
+    var nm=document.getElementById('cd-name-'+idx);
+    var ct=document.getElementById('cd-time-'+idx);
+    var cc=document.getElementById('cd-countdown-'+idx);
+    var cb=document.getElementById('cd-bar-'+idx);
+    if(nm) nm.textContent=next.name;
+    if(ct) ct.textContent=fmt12(next.time);
+    if(cc) cc.textContent=(h>0?h+':':'')+padZ(mn)+':'+padZ(s);
+    if(cb) cb.style.width=pct+'%';
+  }
+  if(cdTimer) clearInterval(cdTimer);
+  updateCd();
+  cdTimer = setInterval(updateCd, 1000);
+}
+
+renderHomeGrid();
+initAreaFilters();
+initServiceFilters();
+initJummahFilters();
+renderList(MOSQUES);
+filterServices();
+</script>
+</div>
+</body>
+</html>
