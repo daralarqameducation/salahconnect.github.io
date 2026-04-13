@@ -61,7 +61,7 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(240,237,232,0.92)
 .slider-nav.next { right: 10px; }
 .section { padding: 0 32px 48px; }
 .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; }
-.section-header h2 { font-size: 22px; font-weight: 700; }
+.section-header h2 { font-size: 18px; font-weight: 700; }
 .section-header p { font-size: 13px; color: var(--muted); margin-top: 2px; }
 .view-all { color: var(--gold); font-size: 14px; font-weight: 500; cursor: pointer; background: none; border: none; font-family: inherit; }
 .mosque-grid { display: flex; flex-direction: column; gap: 8px; }
@@ -78,7 +78,7 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(240,237,232,0.92)
 .view-details { color: var(--gold); font-size: 12px; font-weight: 500; text-decoration: none; }
 .area-badge { font-size: 10px; padding: 2px 7px; border-radius: 6px; background: rgba(155,143,122,0.12); color: var(--gold); border: 1px solid rgba(155,143,122,0.25); white-space: nowrap; font-weight: 500; }
 .mosques-header { padding: 32px 32px 0; }
-.mosques-header h1 { font-size: 32px; font-weight: 800; margin-bottom: 4px; }
+.mosques-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
 .mosques-count { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
 .search-bar-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
 .search-wrap { flex: 1; position: relative; }
@@ -311,7 +311,7 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(240,237,232,0.92)
 <!-- SERVICES -->
 <div class="page" id="page-services">
   <div style="padding:32px 32px 0">
-    <h1 style="font-size:32px;font-weight:800;margin-bottom:4px">Services</h1>
+    <h1 style="font-size:22px;font-weight:700;margin-bottom:4px">Services</h1>
     <p style="font-size:14px;color:var(--muted);margin-bottom:20px">Community services across Tower Hamlets mosques</p>
     <div class="search-wrap" style="margin-bottom:16px">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
@@ -326,7 +326,7 @@ nav { position: sticky; top: 0; z-index: 100; background: rgba(240,237,232,0.92)
 <!-- JUMMAH -->
 <div class="page" id="page-jummah">
   <div style="padding:32px 32px 0">
-    <h1 style="font-size:32px;font-weight:800;margin-bottom:4px">Jummah Times</h1>
+    <h1 style="font-size:22px;font-weight:700;margin-bottom:4px">Jummah Times</h1>
     <p style="font-size:14px;color:var(--muted);margin-bottom:20px">Friday prayer times across Tower Hamlets, Newham &amp; Redbridge</p>
     <div class="search-bar-row">
       <div class="search-wrap">
@@ -579,7 +579,7 @@ function renderServices(results) {
           (s.days ? '<span style="font-size:11px;color:var(--muted);padding:2px 0">' + s.days + (s.time ? ' &bull; ' + s.time : '') + '</span>' : '') +
         '</div>' +
       '</div>' +
-      '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:var(--muted);flex-shrink:0"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>' +
+      
     '</div>';
   }).join('');
 }
@@ -675,7 +675,7 @@ function renderJummah(mosques) {
           '<div style="font-size:14px;font-weight:600;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + e.mosque.name + '</div>' +
           '<span style="font-size:12px;color:var(--muted)">Jummah: ' + e.mosque.jummah + '</span>' +
         '</div>' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--muted);flex-shrink:0"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>' +
+        
       '</div>';
     }).join('');
 
@@ -784,10 +784,8 @@ function cardHTML(m, i) {
       '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
         '<span style="font-size:11px;color:var(--gold)">' + next.name + ' ' + next.time + '</span>' +
         '<span style="font-size:11px;color:var(--muted)">Jummah ' + m.jummah + '</span>' +
-        (hasSvc ? '<span style="font-size:11px;color:var(--muted)">&bull; ' + m.services.length + ' service' + (m.services.length !== 1 ? 's' : '') + '</span>' : '') +
       '</div>' +
     '</div>' +
-    '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--muted);flex-shrink:0"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>' +
   '</div>';
 }
 
@@ -874,7 +872,7 @@ function renderHomeServices(nearestMosques) {
             (s.days ? '<span style="font-size:11px;color:var(--muted)">' + s.days + (s.time ? ' &bull; ' + s.time : '') + '</span>' : '') +
           '</div>' +
         '</div>' +
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:var(--muted);flex-shrink:0"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>' +
+        
       '</div>';
     }).join('') + '</div>';
 }
