@@ -428,11 +428,8 @@ body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--t
 </div>
 
 <script>
-// ─── CONFIG ───────────────────────────────────────────────────────────────────
-// Replace this with your Google Apps Script Web App URL
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
 
-// Demo mosque database — in production this comes from Google Sheets
 var MOSQUE_DB = {
   'east-london-mosque': { pin: '1234', name: 'East London Mosque', address: '82-92 Whitechapel Road, London E1 1JQ', area: 'Whitechapel' },
   'dar-al-arqam': { pin: '2345', name: 'Dar al Arqam', address: '1 Kitcat Terrace, Bow, London E3 2SA', area: 'Bow' },
@@ -446,21 +443,17 @@ var MONTHS = ['January','February','March','April','May','June','July','August',
 var currentMosque = null;
 var currentData = {};
 
-// ─── AUTH ─────────────────────────────────────────────────────────────────────
 function doLogin() {
   var id = document.getElementById('mosque-id-input').value.trim().toLowerCase();
   var pin = document.getElementById('pin-input').value.trim();
   var errEl = document.getElementById('login-error');
   errEl.style.display = 'none';
-
   if (!id || !pin) { showError('Please enter your Mosque ID and PIN.'); return; }
-
   var mosque = MOSQUE_DB[id];
   if (!mosque || mosque.pin !== pin) {
     showError('Incorrect Mosque ID or PIN. Please contact admin@masajid.app for access.');
     return;
   }
-
   currentMosque = { id: id, pin: mosque.pin, name: mosque.name, address: mosque.address, area: mosque.area };
   loadDashboard();
 }
@@ -481,7 +474,6 @@ function doLogout() {
   document.getElementById('pin-input').value = '';
 }
 
-// ─── DASHBOARD ────────────────────────────────────────────────────────────────
 function loadDashboard() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('header').style.display = 'block';
@@ -489,11 +481,8 @@ function loadDashboard() {
   document.getElementById('header-mosque-name').textContent = currentMosque.name;
   document.getElementById('dash-mosque-title').textContent = currentMosque.name;
   document.getElementById('dash-mosque-address').textContent = currentMosque.address;
-
-  // Load saved data from localStorage (in production: Google Sheets)
   var saved = localStorage.getItem('masajid-' + currentMosque.id);
   currentData = saved ? JSON.parse(saved) : getDefaultData();
-
   renderAll();
 }
 
@@ -510,12 +499,11 @@ function getDefaultData() {
 
 function saveData() {
   localStorage.setItem('masajid-' + currentMosque.id, JSON.stringify(currentData));
-  // In production: POST to Google Apps Script
   postToSheet(currentData);
 }
 
 function postToSheet(data) {
-  if (APPS_SCRIPT_URL === 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec') return;
+  if (APPS_SCRIPT_URL.indexOf('YOUR_SCRIPT_ID') > -1) return;
   fetch(APPS_SCRIPT_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -525,39 +513,45 @@ function postToSheet(data) {
 
 function showSaveStatus(msg, ok) {
   var el = document.getElementById('save-status');
+  if (!el) return;
   el.style.display = 'flex';
-  el.innerHTML = (ok
-    ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="#10b981"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>'
-    : '<span class="saving-spinner"></span>') + msg;
+  el.innerHTML = (ok ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="#10b981"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : '<span class="saving-spinner"></span>') + msg;
   if (ok) setTimeout(function() { el.style.display = 'none'; }, 2500);
 }
 
-// ─── RENDER ───────────────────────────────────────────────────────────────────
 function renderAll() {
   renderTodayTimes();
   renderProfile();
   renderServices();
   renderAnnouncements();
   renderYearlyOverview();
-  document.getElementById('today-date-label').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  var todayLbl = document.getElementById('today-date-label');
+  if (todayLbl) todayLbl.textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   var now = new Date();
-  document.getElementById('month-select').value = now.getMonth();
-  document.getElementById('year-select').value = now.getFullYear();
+  var msel = document.getElementById('month-select');
+  var ysel = document.getElementById('year-select');
+  if (msel) msel.value = now.getMonth();
+  if (ysel) ysel.value = now.getFullYear();
   renderMonthTable();
   var jd = currentData.jummah || {};
-  document.getElementById('jummah-times-input').value = typeof jd === 'string' ? jd : (jd.times || '');
-  document.getElementById('jummah-lang').value = jd.lang || '';
-  document.getElementById('jummah-notes').value = jd.notes || '';
+  var jti = document.getElementById('jummah-times-input');
+  var jli = document.getElementById('jummah-lang');
+  var jni = document.getElementById('jummah-notes');
+  if (jti) jti.value = typeof jd === 'string' ? jd : (jd.times || '');
+  if (jli) jli.value = jd.lang || '';
+  if (jni) jni.value = jd.notes || '';
 }
 
 function getTodayTimes() {
-  var today = fmtDateKey(new Date());
-  return (currentData.timetable || {})[today] || currentData.prayerTimes || {};
+  var key = fmtDateKey(new Date());
+  return (currentData.timetable || {})[key] || currentData.prayerTimes || {};
 }
 
 function renderTodayTimes() {
+  var el = document.getElementById('pt-rows');
+  if (!el) return;
   var pt = getTodayTimes();
-  document.getElementById('pt-rows').innerHTML = PRAYER_NAMES.map(function(name) {
+  el.innerHTML = PRAYER_NAMES.map(function(name) {
     var t = pt[name] || { begins: '', jamaah: '' };
     return '<div class="pt-edit-row"><span class="pt-label">' + name + '</span>' +
       '<input type="time" class="mt-cell" id="pt-begins-' + name + '" value="' + (t.begins||'') + '" style="width:100%">' +
@@ -566,54 +560,6 @@ function renderTodayTimes() {
   }).join('');
 }
 
-function renderProfile() {
-  var p = currentData.profile || {};
-  document.getElementById('profile-name').value = currentMosque.name;
-  document.getElementById('profile-address').value = currentMosque.address;
-  document.getElementById('profile-phone').value = p.phone || '';
-  document.getElementById('profile-website').value = p.website || '';
-  document.getElementById('profile-email').value = p.email || '';
-  document.getElementById('profile-about').value = p.about || '';
-  document.getElementById('profile-facilities').value = p.facilities || '';
-}
-
-function renderServices() {
-  var services = currentData.services || [];
-  var el = document.getElementById('services-list');
-  if (!services.length) {
-    el.innerHTML = '<p style="font-size:13px;color:var(--muted);padding:8px 0">No services added yet.</p>';
-    return;
-  }
-  el.innerHTML = services.map(function(s, i) {
-    return '<div class="service-item">' +
-      '<div class="service-info">' +
-        '<div class="sname">' + s.name + '<span class="type-badge t-' + s.type + '">' + s.type + '</span></div>' +
-        '<div class="smeta">' + (s.days || '') + (s.time ? ' &bull; ' + s.time : '') + '</div>' +
-      '</div>' +
-      '<button class="del-btn" onclick="deleteService(' + i + ')">&#x2715;</button>' +
-    '</div>';
-  }).join('');
-}
-
-function renderAnnouncements() {
-  var anns = currentData.announcements || [];
-  var el = document.getElementById('announcements-list');
-  if (!anns.length) {
-    el.innerHTML = '<p style="font-size:13px;color:var(--muted);padding:8px 0">No announcements yet.</p>';
-    return;
-  }
-  el.innerHTML = anns.map(function(a, i) {
-    return '<div class="announcement-item">' +
-      '<div class="ann-body">' +
-        '<div class="atitle">' + a.title + (a.category && a.category !== 'General' ? ' <span class="type-badge t-Community">' + a.category + '</span>' : '') + '</div>' +
-        '<div class="adesc">' + (a.date ? a.date + ' &bull; ' : '') + a.desc + '</div>' +
-      '</div>' +
-      '<button class="del-btn" onclick="deleteAnnouncement(' + i + ')">&#x2715;</button>' +
-    '</div>';
-  }).join('');
-}
-
-// ─── SAVE ACTIONS ─────────────────────────────────────────────────────────────
 function saveTodayTimes() {
   var today = fmtDateKey(new Date());
   currentData.timetable = currentData.timetable || {};
@@ -640,15 +586,18 @@ function saveJummah() {
 }
 
 function renderMonthTable() {
-  var month = parseInt(document.getElementById('month-select').value);
-  var year  = parseInt(document.getElementById('year-select').value);
-  var days  = new Date(year, month+1, 0).getDate();
+  var msel = document.getElementById('month-select');
+  var ysel = document.getElementById('year-select');
+  if (!msel || !ysel) return;
+  var month = parseInt(msel.value);
+  var year = parseInt(ysel.value);
+  var days = new Date(year, month+1, 0).getDate();
   var timetable = currentData.timetable || {};
   var prayers = ['Fajr','Sunrise','Zuhr','Asr','Maghrib','Isha'];
   var thead = '<tr><th class="mt-head" style="text-align:left">Date</th>';
   prayers.forEach(function(p){ thead += '<th class="mt-head" colspan="2">' + p + '</th>'; });
   thead += '</tr><tr><th></th>';
-  prayers.forEach(function(){ thead += '<th class="mt-head">Begins</th><th class="mt-head">Jama'ah</th>'; });
+  prayers.forEach(function(){ thead += '<th class="mt-head">Begins</th><th class="mt-head">Jamaah</th>'; });
   thead += '</tr>';
   document.getElementById('month-thead').innerHTML = thead;
   var rows = '';
@@ -657,13 +606,13 @@ function renderMonthTable() {
     var entry = timetable[key] || {};
     var dow = new Date(year,month,d).toLocaleDateString('en-GB',{weekday:'short'});
     var isFri = new Date(year,month,d).getDay()===5;
-    rows += '<tr class="mt-row"' + (isFri?' style="background:rgba(240,165,0,0.04)"':'') + '>';
+    rows += '<tr class="mt-row"' + (isFri?' style="background:rgba(155,143,122,0.06)"':'') + '>';
     rows += '<td class="mt-date">'+pad(d)+' <span style="color:var(--muted)">'+dow+'</span></td>';
     prayers.forEach(function(p) {
-      var t = entry[p] || {begins:'',jamaah:''};
-      var dis = p==='Sunrise'?' disabled style="opacity:0.3"':'';
+      var t = (entry[p]) || {begins:'',jamaah:''};
+      var dis = p==='Sunrise' ? ' disabled' : '';
       rows += '<td style="padding:3px 4px"><input class="mt-cell" type="time" data-key="'+key+'" data-prayer="'+p+'" data-field="begins" value="'+(t.begins||'')+'"></td>';
-      rows += '<td style="padding:3px 4px"><input class="mt-cell" type="time" data-key="'+key+'" data-prayer="'+p+'" data-field="jamaah" value="'+(t.jamaah||'')+'">'+dis+'</td>';
+      rows += '<td style="padding:3px 4px"><input class="mt-cell" type="time" data-key="'+key+'" data-prayer="'+p+'" data-field="jamaah" value="'+(t.jamaah||'')+'"'+dis+'></td>';
     });
     rows += '</tr>';
   }
@@ -691,10 +640,11 @@ function copyFromPrevMonth() {
     var src=pad(d)+'/'+pad(pm+1)+'/'+py, dst=pad(d)+'/'+pad(month+1)+'/'+year;
     if(currentData.timetable[src]&&!currentData.timetable[dst]) currentData.timetable[dst]=JSON.parse(JSON.stringify(currentData.timetable[src]));
   }
-  renderMonthTable(); showSaveStatus('Copied - review and save',false);
+  renderMonthTable(); showSaveStatus('Copied - review and save', false);
 }
 
 var parsedCSV = null;
+
 function handleCSVUpload(event) {
   var file=event.target.files[0]; if(!file) return;
   var reader=new FileReader();
@@ -741,28 +691,39 @@ function downloadTemplate() {
 }
 
 function renderYearlyOverview() {
+  var el = document.getElementById('yearly-overview');
+  if (!el) return;
   var timetable=currentData.timetable||{}, year=new Date().getFullYear();
   var html='<div style="display:flex;flex-direction:column;gap:6px">';
-  var MONTHS2=['January','February','March','April','May','June','July','August','September','October','November','December'];
   for(var m=0;m<12;m++){
     var days=new Date(year,m+1,0).getDate(), filled=0;
     for(var d=1;d<=days;d++){var key=pad(d)+'/'+pad(m+1)+'/'+year; if(timetable[key]&&timetable[key].Fajr&&timetable[key].Fajr.begins) filled++;}
     var pct=Math.round(filled/days*100);
-    html+='<div class="yr-month '+(pct===100?'complete':'empty')+'"><span>'+MONTHS2[m]+' '+year+'</span><div style="display:flex;align-items:center;gap:10px"><div style="width:100px;height:4px;background:rgba(255,255,255,0.06);border-radius:2px"><div style="width:'+pct+'%;height:4px;background:'+(pct===100?'var(--green)':'var(--gold)')+'border-radius:2px"></div></div><span style="font-size:12px;color:var(--muted);min-width:60px;text-align:right">'+filled+'/'+days+' days</span></div></div>';
+    html+='<div class="yr-month '+(pct===100?'complete':'empty')+'"><span>'+MONTHS[m]+' '+year+'</span><div style="display:flex;align-items:center;gap:10px"><div style="width:100px;height:4px;background:rgba(0,0,0,0.08);border-radius:2px"><div style="width:'+pct+'%;height:4px;background:'+(pct===100?'#10b981':'#9b8f7a')+';border-radius:2px"></div></div><span style="font-size:12px;color:var(--muted);min-width:60px;text-align:right">'+filled+'/'+days+' days</span></div></div>';
   }
   html+='</div>';
-  var el=document.getElementById('yearly-overview'); if(el) el.innerHTML=html;
+  el.innerHTML=html;
 }
 
 function switchSubTab(tab) {
   ['today','monthly','upload','jummah'].forEach(function(t){
-    document.getElementById('subt-'+t).style.display=t===tab?'block':'none';
-    document.getElementById('st-'+t).classList.toggle('active',t===tab);
+    var el = document.getElementById('subt-'+t);
+    var btn = document.getElementById('st-'+t);
+    if(el) el.style.display=t===tab?'block':'none';
+    if(btn) btn.classList.toggle('active',t===tab);
   });
 }
 
-function pad(n){return n<10?'0'+n:''+n;}
-function fmtDateKey(d){return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear();}
+function renderProfile() {
+  var p = currentData.profile || {};
+  document.getElementById('profile-name').value = currentMosque.name;
+  document.getElementById('profile-address').value = currentMosque.address;
+  document.getElementById('profile-phone').value = p.phone || '';
+  document.getElementById('profile-website').value = p.website || '';
+  document.getElementById('profile-email').value = p.email || '';
+  document.getElementById('profile-about').value = p.about || '';
+  document.getElementById('profile-facilities').value = p.facilities || '';
+}
 
 function saveProfile() {
   currentData.profile = {
@@ -774,6 +735,22 @@ function saveProfile() {
   };
   saveData();
   showSaveStatus('Profile saved', true);
+}
+
+function renderServices() {
+  var services = currentData.services || [];
+  var el = document.getElementById('services-list');
+  if (!el) return;
+  if (!services.length) { el.innerHTML = '<p style="font-size:13px;color:var(--muted);padding:8px 0">No services added yet.</p>'; return; }
+  el.innerHTML = services.map(function(s, i) {
+    return '<div class="service-item">' +
+      '<div class="service-info">' +
+        '<div class="sname">' + s.name + '<span class="type-badge t-' + s.type + '">' + s.type + '</span></div>' +
+        '<div class="smeta">' + (s.days || '') + (s.time ? ' - ' + s.time : '') + '</div>' +
+      '</div>' +
+      '<button class="del-btn" onclick="deleteService(' + i + ')">&#x2715;</button>' +
+    '</div>';
+  }).join('');
 }
 
 function showAddService() {
@@ -807,6 +784,22 @@ function deleteService(i) {
   showSaveStatus('Service removed', true);
 }
 
+function renderAnnouncements() {
+  var anns = currentData.announcements || [];
+  var el = document.getElementById('announcements-list');
+  if (!el) return;
+  if (!anns.length) { el.innerHTML = '<p style="font-size:13px;color:var(--muted);padding:8px 0">No announcements yet.</p>'; return; }
+  el.innerHTML = anns.map(function(a, i) {
+    return '<div class="announcement-item">' +
+      '<div class="ann-body">' +
+        '<div class="atitle">' + a.title + (a.category && a.category !== 'General' ? ' <span class="type-badge t-Community">' + a.category + '</span>' : '') + '</div>' +
+        '<div class="adesc">' + (a.date ? a.date + ' - ' : '') + a.desc + '</div>' +
+      '</div>' +
+      '<button class="del-btn" onclick="deleteAnnouncement(' + i + ')">&#x2715;</button>' +
+    '</div>';
+  }).join('');
+}
+
 function showAddAnnouncement() {
   var f = document.getElementById('add-ann-form');
   f.style.display = f.style.display === 'none' ? 'block' : 'none';
@@ -838,18 +831,26 @@ function deleteAnnouncement(i) {
   showSaveStatus('Announcement removed', true);
 }
 
-// ─── TABS ─────────────────────────────────────────────────────────────────────
 function switchTab(tab) {
   ['times','profile','services','announce'].forEach(function(t) {
-    document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+    var el = document.getElementById('tab-' + t);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
   });
   document.querySelectorAll('.tab').forEach(function(b, i) {
     b.classList.toggle('active', ['times','profile','services','announce'][i] === tab);
   });
 }
 
-// Allow Enter key on login
+function pad(n){ return n<10?'0'+n:''+n; }
+function fmtDateKey(d){ return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear(); }
+
 document.getElementById('pin-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') doLogin();
 });
-document.getElementById('mosque-id-inp
+document.getElementById('mosque-id-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('pin-input').focus();
+});
+
+</script>
+</body>
+</html>
